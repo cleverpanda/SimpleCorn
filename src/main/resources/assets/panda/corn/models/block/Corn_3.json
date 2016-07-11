@@ -1,0 +1,6 @@
+{
+    "parent": "corn:block/densecrop",
+    "textures": {
+        "crop": "corn:blocks/Corn_3"
+    }
+}

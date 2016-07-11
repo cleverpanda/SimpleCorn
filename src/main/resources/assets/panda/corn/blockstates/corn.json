@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "age = 0": { "model": "Corn_1" },
+        "age = 1": { "model": "Corn_2" },
+        "age = 2": { "model": "Corn_3" },
+        "age = 3": { "model": "Corn_4" },
+	"age = 4": { "model": "Corn_5" },
+	"age = 5": { "model": "Corn_6" },
+	"age = 6": { "model": "Corn_7" },
+	"age = 7": { "model": "Corn_8" },
+	"age = 8": { "model": "Corn_9" },
+	"age = 9": { "model": "Corn_10" },
+	"age = 10": { "model": "Corn_11" },
+	"age = 11": { "model": "Corn_12" }
+    }
+}
