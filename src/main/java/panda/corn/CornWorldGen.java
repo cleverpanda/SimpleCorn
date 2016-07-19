@@ -19,7 +19,7 @@ public class CornWorldGen implements IVillageCreationHandler {
 
 	@Override
 	public PieceWeight getVillagePieceWeight(Random random, int i) {
-        return  new StructureVillagePieces.PieceWeight(ComponentCornField.class, 20, MathHelper.getRandomIntegerInRange(random, 2 + i, 4 + i * 2));
+        return  new StructureVillagePieces.PieceWeight(ComponentCornField.class, 30, MathHelper.getRandomIntegerInRange(random, 2 + i, 4 + i * 2));
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class CornWorldGen implements IVillageCreationHandler {
 	}
 
 	@Override
-	public Object buildComponent(PieceWeight villagePiece, Start startPiece,List pieces, Random random, int p1, int p2, int p3,EnumFacing facing, int p5) {
-		return ComponentCornField.buildComponent(startPiece, pieces, random, p1, p2, p3, facing, p5);
+	public Object buildComponent(PieceWeight villagePiece, Start startPiece,List pieces, Random random, int x, int y, int z,EnumFacing facing, int p5) {
+		return ComponentCornField.buildComponent(startPiece, pieces, random, x, y, z, facing, p5);
 	}
 }
