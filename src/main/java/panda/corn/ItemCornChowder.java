@@ -1,6 +1,6 @@
 package panda.corn;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -14,10 +14,10 @@ public class ItemCornChowder extends ItemFood{
 	}
 
 	@Override
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase playerIn)
 	{
 		super.onItemUseFinish(stack, worldIn, playerIn);
-		return new ItemStack(Items.bowl);
+		return new ItemStack(Items.BOWL);
 	}
 
 }

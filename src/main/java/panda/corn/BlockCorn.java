@@ -5,15 +5,18 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -22,20 +25,59 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockCorn extends BlockBush implements IGrowable{
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 11);
+	 private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, .875D, 1.0D),
+		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 	private Block previousblock;
+	//Items spawn too big
 	public BlockCorn()
 	{
 		setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
-		float f = 0.375F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+		//this.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 1.0F, 0.875F);
 		setTickRandomly(true);
 		setHardness(0.3F);  
-		this.setStepSound(soundTypeGrass);
+		this.setSoundType(SoundType.PLANT);
 		this.disableStats();
-		this.setCreativeTab(null);
+		this.setCreativeTab((CreativeTabs)null);
 	}
-
 	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return CROPS_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
+    }
+	
+	protected PropertyInteger getAgeProperty()
+    {
+        return AGE;
+    }
+
+    public int getMaxAge()
+    {
+        return 11;
+    }
+
+    protected int getAge(IBlockState state)
+    {
+        return ((Integer)state.getValue(this.getAgeProperty())).intValue();
+    }
+
+    public IBlockState withAge(int age)
+    {
+        return this.getDefaultState().withProperty(this.getAgeProperty(), Integer.valueOf(age));
+    }
+
+    public boolean isMaxAge(IBlockState state)
+    {
+        return ((Integer)state.getValue(this.getAgeProperty())).intValue() >= this.getMaxAge();
+    }
+    
+    
+
+    @Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
 	{
 		int j = ((Integer)state.getValue(AGE)).intValue();
@@ -47,7 +89,7 @@ public class BlockCorn extends BlockBush implements IGrowable{
 				{
 					if (worldIn.getLightFromNeighbors(pos.up()) >= 9)
 					{
-						if (rand.nextInt(2) == 1)
+						if (rand.nextInt(Corn.growChance) == 1)
 						{
 							//Then Corn can grow
 							if(j == 0 || j == 1 || j == 2){
@@ -72,7 +114,7 @@ public class BlockCorn extends BlockBush implements IGrowable{
 							}
 							if(j == 4 || j == 7){
 								if(worldIn.getBlockState(pos.up()).getBlock() == this){
-									if (rand.nextInt(6) == 0)
+									if (rand.nextInt(Corn.growChance*2) == 0)
 									{
 										int k = ((Integer) worldIn.getBlockState(pos.up()).getValue(AGE)).intValue();
 										if(k == 5){
@@ -111,11 +153,18 @@ public class BlockCorn extends BlockBush implements IGrowable{
 	{
 		return GameRegistry.findItem(Corn.MODID, "corncob");
 	}
+	
+	@Override
+	public boolean isFertile(World world, BlockPos pos)
+    {
+     return false;
+    }
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos,IBlockState state)
 	{
-		if (world.getBlockState(pos.down()).getBlock() == this || world.getBlockState(pos.down()).getBlock()==Blocks.farmland)
+		//
+		if (world.getBlockState(pos.down()).getBlock() == this|| world.getBlockState(pos.down()).getBlock()==Blocks.FARMLAND  || world.getBlockState(pos.down()).getBlock().isFertile(world, pos))
 		{
 			return true;
 		}
@@ -124,12 +173,12 @@ public class BlockCorn extends BlockBush implements IGrowable{
 		}
 	}
 
-	@Override
+	/*@Override
 	protected boolean canPlaceBlockOn(Block ground)
 	{
 		Block block = Block.getBlockFromName("farmland").getStateFromMeta(7).getBlock();
 		return ground == block;
-	}
+	}*/
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -164,17 +213,18 @@ public class BlockCorn extends BlockBush implements IGrowable{
 	{
 		return ((Integer)state.getValue(AGE)).intValue();
 	}
+
 	@Override
-	protected BlockState createBlockState()
-	{
-		return new BlockState(this, new IProperty[] {AGE});
-	}
+	protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {AGE});
+    }
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
 		Block block = world.getBlockState(pos.down()).getBlock();
-		if (block.canSustainPlant(world, pos, EnumFacing.UP, this) || block == this){
+		if (block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this){
 			return true;
 		}
 		return false;
@@ -266,4 +316,5 @@ public class BlockCorn extends BlockBush implements IGrowable{
 			entityIn.motionZ *= 0.1D;  
 		}
 	}
+
 }

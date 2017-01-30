@@ -1,7 +1,7 @@
 {
-    "parent": "builtin/generated",
+    "parent": "item/generated",
     "textures": {
-        "layer0": "corn:items/cornchowder"
+        "layer0": "corn:items/popcorn"
     },
     "display": {
         "thirdperson": {
