@@ -1,8 +1,8 @@
 [
 {
-  "modid": "corn",
-  "name": "Corn Crop Mod",
-  "description": "Adds Meaningful Corn to Minecraft!",
+  "modid": "simplecorn",
+  "name": "Simple Corn",
+  "description": "Corn like Mojang might make!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
