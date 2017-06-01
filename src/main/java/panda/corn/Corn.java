@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeFireworks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,17 +17,20 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import panda.corn.entity.MyEntityFireworkRocket;
 import panda.corn.events.GenericBreedHandler;
 import panda.corn.events.GenericFollowHandler;
-import panda.corn.events.RemapHandler;
 import panda.corn.events.ToolTipHandler;
 import panda.corn.other.Compatability;
 import panda.corn.other.Config;
 import panda.corn.other.MyRecipeFireworks;
+import panda.corn.other.RenderFireworkEntity;
 import panda.corn.registry.MasterRegistrar;
 import panda.corn.registry.ObjectList;
 
@@ -36,7 +40,7 @@ public class Corn {
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.1.8";
 	
 	public static boolean isIEInstalled = Loader.isModLoaded("immersiveengineering");
 	
@@ -53,6 +57,10 @@ public class Corn {
 		Config.preInit(event);
 		MasterRegistrar.callRegistry(event);
 		ReplaceFireworkRecipe();
+		if(event.getSide() == Side.CLIENT){
+			RenderingRegistry.registerEntityRenderingHandler(MyEntityFireworkRocket.class, RenderFireworkEntity.INSTANCE);
+		}
+		
 		    	
 	}
 	
@@ -65,7 +73,6 @@ public class Corn {
 		MinecraftForge.EVENT_BUS.register(new GenericFollowHandler(EntityChicken.class,ObjectList.KERNELS));
 		MinecraftForge.EVENT_BUS.register(new GenericBreedHandler(EntityChicken.class,ObjectList.KERNELS));
 		MinecraftForge.EVENT_BUS.register(new ToolTipHandler());
-		MinecraftForge.EVENT_BUS.register(new RemapHandler());
 		
 		if(isIEInstalled){
 			Compatability.IE2();
@@ -75,7 +82,34 @@ public class Corn {
 	@EventHandler
     public void missingMapping(FMLMissingMappingsEvent event)
     {
-		RemapHandler.processingMissingMap(event);
+		List<MissingMapping> missingMappings = event.getAll();
+        for (MissingMapping map : missingMappings)
+        {
+        	if(map.name.equals("corn:corn")){
+        		map.remap(ObjectList.CORN);
+        	}else
+        	if(map.name.equals("corn:corncob")){
+        		map.remap(ObjectList.COB);
+        	}else
+        	if(map.name.equals("corn:kernels")){
+        		map.remap(ObjectList.KERNELS);
+        	}else
+        	if(map.name.equals("corn:poppedcorn")){
+        		map.remap(ObjectList.POPCORN);
+        	}else
+        	if(map.name.equals("corn:roastedcorn")){
+        		map.remap(ObjectList.ROASTED_CORN);
+        	}else
+        	if(map.name.equals("corn:popfirework")){
+        		map.remap(ObjectList.POP_FIREWORK);
+        	}else
+        	if(map.name.equals("corn:chickencornchowder")){
+        		map.remap(ObjectList.CHICKEN_CHOWDER);
+        	}else
+        	if(map.name.equals("corn:cornchowder")){
+        		map.remap(ObjectList.CHOWDER);
+        	}
+        }
     }
 	
 
