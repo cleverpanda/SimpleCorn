@@ -3,13 +3,16 @@
   "modid": "simplecorn",
   "name": "Simple Corn",
   "description": "Corn like Mojang might make!",
+
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Cleverpanda714"],
+
   "credits": "Loosely based off the suggestion by MForums user Shaddura",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []}
+  "dependencies": []
+}
 ]
