@@ -1,8 +1,8 @@
-tile.simplecorn.corn.name=corn
-item.simplecorn.corncob.name=corn Cob
-item.simplecorn.roastedcorn.name=Roasted corn
-item.simplecorn.cornchowder.name=corn Chowder
-item.simplecorn.chickencornchowder.name=Chicken corn Chowder
-item.simplecorn.kernels.name=corn Kernels
+tile.simplecorn.corn.name=Corn
+item.simplecorn.corncob.name=Corn Cob
+item.simplecorn.roastedcorn.name=Roasted Corn
+item.simplecorn.cornchowder.name=Corn Chowder
+item.simplecorn.chickencornchowder.name=Chicken Corn Chowder
+item.simplecorn.kernels.name=Corn Kernels
 item.simplecorn.poppedcorn.name=Popcorn
 item.simplecorn.popfirework.name=Firework Rocket
