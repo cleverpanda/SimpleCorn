@@ -6,6 +6,7 @@ import java.util.Random;
 import panda.corn.objects.BlockCorn;
 import panda.corn.registry.ObjectList;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
@@ -42,23 +43,25 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 
             this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 3, 0);
         }
-
+		IBlockState edgestate = this.getBiomeSpecificBlockState(Blocks.LOG.getDefaultState());
+		
 		this.fillWithBlocks(worldIn, box, 0, 1, 0, 6, 4, 8, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		this.fillWithBlocks(worldIn, box, 1, 0, 1, 2, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
 		this.fillWithBlocks(worldIn, box, 4, 0, 1, 5, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
-		this.fillWithBlocks(worldIn, box, 0, 0, 0, 0, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
-		this.fillWithBlocks(worldIn, box, 6, 0, 0, 6, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
-		this.fillWithBlocks(worldIn, box, 1, 0, 0, 5, 0, 0, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
-		this.fillWithBlocks(worldIn, box, 1, 0, 8, 5, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+		this.fillWithBlocks(worldIn, box, 0, 0, 0, 0, 0, 8, edgestate, edgestate, false);
+		this.fillWithBlocks(worldIn, box, 6, 0, 0, 6, 0, 8, edgestate, edgestate, false);
+		this.fillWithBlocks(worldIn, box, 1, 0, 0, 5, 0, 0, edgestate, edgestate, false);
+		this.fillWithBlocks(worldIn, box, 1, 0, 8, 5, 0, 8, edgestate, edgestate, false);
 		this.fillWithBlocks(worldIn, box, 3, 0, 1, 3, 0, 7, Blocks.WATER.getDefaultState(), Blocks.WATER.getDefaultState(), false);
 		int i;
-
-		for (i = 1; i <= 7; ++i)
-		{
-			this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
-			this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
-			this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
-			this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
+		if(crop != null){
+			for (i = 1; i <= 7; ++i)
+			{
+				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
+			}
 		}
 
 		for (i = 0; i < 9; ++i)

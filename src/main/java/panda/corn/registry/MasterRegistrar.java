@@ -72,7 +72,9 @@ public final class MasterRegistrar {
 		register(e, ObjectList.getItemList());
 		register(e, ObjectList.getBlockList());
 		Recipes.register();
-		RenderingRegistry.registerEntityRenderingHandler(MyEntityFireworkRocket.class, RenderFireworkEntity.INSTANCE);
+		if(e.getSide() == Side.CLIENT){
+				RenderingRegistry.registerEntityRenderingHandler(MyEntityFireworkRocket.class, RenderFireworkEntity.INSTANCE);
+		}
 		EntityRegistry.registerModEntity(new ResourceLocation("simplecorn:entitypopfirework"),MyEntityFireworkRocket.class, "entitypopfirework", 132, Corn.instance, 64, 3, true);
 		
 		MapGenStructureIO.registerStructureComponent(ComponentCornField.class, "Vicf");
