@@ -208,22 +208,6 @@ public class MyEntityFireworkRocket extends Entity{
 	}
 
 	/**
-	 * Gets how bright this entity is.
-	 */
-	@Override
-	public float getBrightness(float partialTicks)
-	{
-		return super.getBrightness(partialTicks);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getBrightnessForRender(float partialTicks)
-	{
-		return super.getBrightnessForRender(partialTicks);
-	}
-
-	/**
 	 * Returns true if it's possible to attack this entity with an item.
 	 */
 	@Override

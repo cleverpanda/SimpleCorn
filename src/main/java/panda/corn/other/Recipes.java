@@ -8,13 +8,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
 	public static void register() {
-		GameRegistry.addShapelessRecipe(new ItemStack(ObjectList.CHOWDER),
-				new Object[] {
-			new ItemStack(Items.BOWL, 1),
+		
+		GameRegistry.addShapelessRecipe(name, new ItemStack(ObjectList.CHOWDER), new ItemStack(Items.BOWL, 1),
 			new ItemStack(Items.MILK_BUCKET, 1),
 			new ItemStack(ObjectList.KERNELS, 1),
-			new ItemStack(ObjectList.KERNELS, 1)
-		});
+			new ItemStack(ObjectList.KERNELS, 1));
+		
 
 		GameRegistry.addShapelessRecipe(new ItemStack(ObjectList.CHICKEN_CHOWDER),
 				new Object[] {

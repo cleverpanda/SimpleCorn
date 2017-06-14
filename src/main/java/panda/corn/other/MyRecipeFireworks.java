@@ -16,6 +16,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class MyRecipeFireworks implements IRecipe
@@ -275,14 +276,6 @@ public class MyRecipeFireworks implements IRecipe
         return this.resultItem.copy();
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
-    @Override
-	public int getRecipeSize()
-    {
-        return 10;
-    }
 
     @Override
 	@Nullable
@@ -305,4 +298,24 @@ public class MyRecipeFireworks implements IRecipe
 
         return nonnulllist;
     }
+	@Override
+	public boolean func_194133_a(int p_194133_1_, int p_194133_2_) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public IRecipe setRegistryName(ResourceLocation name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ResourceLocation getRegistryName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Class<IRecipe> getRegistryType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

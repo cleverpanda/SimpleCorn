@@ -36,7 +36,7 @@ public class Corn {
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.2.0";
 	
 	public static boolean isIEInstalled = Loader.isModLoaded("immersiveengineering");
 	

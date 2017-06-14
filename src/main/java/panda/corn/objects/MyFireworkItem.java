@@ -2,7 +2,10 @@ package panda.corn.objects;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import panda.corn.entity.MyEntityFireworkRocket;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemFireworkCharge;
@@ -45,7 +48,7 @@ public class MyFireworkItem extends ItemFirework{
     }
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn,List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		if (stack.hasTagCompound())
         {
             NBTTagCompound nbttagcompound = stack.getTagCompound().getCompoundTag("Fireworks");
