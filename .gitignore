@@ -20,3 +20,6 @@ build
 # other
 eclipse
 run
+*.jar
+ImmersiveEngineering-0.12-65.zip
+src/main/resources/assets/simplecorn/recipes/New Text Document.txt
