@@ -16,6 +16,8 @@ import net.minecraft.item.Item;
 
 public final class ObjectList {
 	
+	private ObjectList() {}
+	
 	/*
 	 * Declare items here and then subsequently add them to getList(); They will be automatically moved to registration and model loading.
 	 */
@@ -31,7 +33,7 @@ public final class ObjectList {
 	
 	
 	public static List<Item> getItemList() {
-		List<Item> list = new ArrayList<Item>();
+		List<Item> list = new ArrayList<>();
 		list.add(COB);
 		list.add(KERNELS);
 		list.add(ROASTED_CORN);
@@ -44,7 +46,7 @@ public final class ObjectList {
 	}
 	
 	public static List<Block> getBlockList() {
-		List<Block> list = new ArrayList<Block>();
+		List<Block> list = new ArrayList<>();
 		list.add(CORN);
 
 		return list;

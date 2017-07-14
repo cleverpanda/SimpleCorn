@@ -16,18 +16,16 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class MyRecipeFireworks implements IRecipe
+public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     private ItemStack resultItem= ItemStack.EMPTY;
-    private boolean popcorn=false;;
+    private boolean popcorn=false;
 
     /**
      * Used to check if a recipe matches current crafting inventory
      */
-    List<String> list = new ArrayList<String>();
     @Override
 	public boolean matches(InventoryCrafting inv, World worldIn)
     {
@@ -73,7 +71,7 @@ public class MyRecipeFireworks implements IRecipe
                 {
                     ++i1;
                     ++k;
-                    popcorn =  true;
+                    popcorn = true;
                 }
                 else if (itemstack.getItem() == Items.FIRE_CHARGE)
                 {
@@ -110,30 +108,31 @@ public class MyRecipeFireworks implements IRecipe
                 }else{
                 	this.resultItem = new ItemStack(Items.FIREWORKS, 3);
                 }
-            	
-
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                
                 if (l > 0)
                 {
-                    NBTTagCompound nbttagcompound3 = new NBTTagCompound();
+                    
                     NBTTagList nbttaglist = new NBTTagList();
 
                     for (int k2 = 0; k2 < inv.getSizeInventory(); ++k2)
                     {
                         ItemStack itemstack3 = inv.getStackInSlot(k2);
 
-                        if (itemstack3 != null && itemstack3.getItem() == Items.FIREWORK_CHARGE && itemstack3.hasTagCompound() && itemstack3.getTagCompound().hasKey("Explosion", 10))
+                        if (itemstack3.getItem() == Items.FIREWORK_CHARGE && itemstack3.hasTagCompound() && itemstack3.getTagCompound().hasKey("Explosion", 10))
                         {
                             nbttaglist.appendTag(itemstack3.getTagCompound().getCompoundTag("Explosion"));
                         }
                     }
 
-                    nbttagcompound3.setTag("Explosions", nbttaglist);
-                    nbttagcompound3.setByte("Flight", (byte)j);
-                    nbttagcompound1.setTag("Fireworks", nbttagcompound3);
+                    nbttagcompound1.setTag("Explosions", nbttaglist);
+                                       
                 }
-
-                this.resultItem.setTagCompound(nbttagcompound1); //Forge BugFix: NPE Protection
+                
+                nbttagcompound1.setByte("Flight", (byte)j);
+                NBTTagCompound nbttagcompound3 = new NBTTagCompound();
+                nbttagcompound3.setTag("Fireworks", nbttagcompound1);
+                this.resultItem.setTagCompound(nbttagcompound3);
                 return true;
             }
             else if (j == 1 && i == 0 && l == 0 && k > 0 && j1 <= 1)
@@ -142,7 +141,7 @@ public class MyRecipeFireworks implements IRecipe
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 NBTTagCompound nbttagcompound2 = new NBTTagCompound();
                 byte b0 = 0;
-                List<Integer> list = Lists.<Integer>newArrayList();
+                List<Integer> properties = Lists.<Integer>newArrayList();
                 boolean ispopcorn= false;
                 for (int l1 = 0; l1 < inv.getSizeInventory(); ++l1)
                 {
@@ -150,9 +149,9 @@ public class MyRecipeFireworks implements IRecipe
 
                     if (!itemstack2.isEmpty())
                     {
-                        if (itemstack2.getItem() == Items.DYE)
+                    	if (itemstack2.getItem() == Items.DYE)
                         {
-                            list.add(Integer.valueOf(ItemDye.DYE_COLORS[itemstack2.getMetadata() & 15]));
+                    		properties.add(Integer.valueOf(ItemDye.DYE_COLORS[itemstack2.getMetadata() & 15]));
                         }
                         else if (itemstack2.getItem() == Items.GLOWSTONE_DUST)
                         {
@@ -165,9 +164,7 @@ public class MyRecipeFireworks implements IRecipe
                         else if (itemstack2.getItem() == ObjectList.KERNELS)
                         {
                         	nbttagcompound2.setBoolean("Popcorn", true);
-                            
                             ispopcorn = true;
-                            
                         }
                         else if (itemstack2.getItem() == Items.FIRE_CHARGE)
                         {
@@ -188,18 +185,18 @@ public class MyRecipeFireworks implements IRecipe
                     }
                 }
                 if(ispopcorn){
-                	list.clear();
-                	list.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
-                	list.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
-                	list.add(Integer.valueOf(ItemDye.DYE_COLORS[14]));
-                	list.add(Integer.valueOf(ItemDye.DYE_COLORS[15]));
-                	list.add(Integer.valueOf(ItemDye.DYE_COLORS[3]));
+                	properties.clear();
+                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
+                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
+                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[14]));
+                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[15]));
+                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[3]));
                 }
-                int[] aint1 = new int[list.size()];
+                int[] aint1 = new int[properties.size()];
 
                 for (int l2 = 0; l2 < aint1.length; ++l2)
                 {
-                    aint1[l2] = list.get(l2).intValue();
+                    aint1[l2] = properties.get(l2).intValue();
                 }
 
                 nbttagcompound2.setIntArray("Colors", aint1);
@@ -220,7 +217,7 @@ public class MyRecipeFireworks implements IRecipe
                     {
                         if (itemstack1.getItem() == Items.DYE)
                         {
-                            list1.add(Integer.valueOf(ItemDye.DYE_COLORS[itemstack1.getMetadata() & 15]));
+                            list1.add(ItemDye.DYE_COLORS[itemstack1.getMetadata() & 15]);
                         }
                         else if (itemstack1.getItem() == Items.FIREWORK_CHARGE)
                         {
@@ -299,23 +296,18 @@ public class MyRecipeFireworks implements IRecipe
         return nonnulllist;
     }
 	@Override
-	public boolean func_194133_a(int p_194133_1_, int p_194133_2_) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean isHidden()
+    {
+        return true;
+    }
+
+    /**
+     * Used to determine if this recipe can fit in a grid of the given width/height
+     */
 	@Override
-	public IRecipe setRegistryName(ResourceLocation name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public ResourceLocation getRegistryName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Class<IRecipe> getRegistryType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public boolean canFit(int width, int height)
+    {
+        return width * height >= 1;
+    }
+	
 }

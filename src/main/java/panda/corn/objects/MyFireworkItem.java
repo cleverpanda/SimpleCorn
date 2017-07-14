@@ -51,7 +51,7 @@ public class MyFireworkItem extends ItemFirework{
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		if (stack.hasTagCompound())
         {
-            NBTTagCompound nbttagcompound = stack.getTagCompound().getCompoundTag("Fireworks");
+            NBTTagCompound nbttagcompound = stack.getSubCompound("Fireworks");
 
             if (nbttagcompound != null)
             {
@@ -70,14 +70,14 @@ public class MyFireworkItem extends ItemFirework{
 
                         if (!list.isEmpty())
                         {
-                            for (int j = 1; j < ((List)list).size(); ++j)
+                            for (int j = 1; j < list.size(); ++j)
                             {
                                 list.set(j, "  " + list.get(j));
                             }
 
                             tooltip.addAll(list);
                         }
-                    tooltip.add("Popcorn");
+                    tooltip.add(I18n.translateToLocal("item.simplecorn.poppedcorn.name"));  
                 }
             }
         }

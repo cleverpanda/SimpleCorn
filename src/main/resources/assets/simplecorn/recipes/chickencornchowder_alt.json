@@ -1,0 +1,12 @@
+{
+    "conditions": [{
+        "type": "minecraft:item_exists",
+        "item": "simplecorn:chickencornchowder"
+    }],
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        { "item": "simplecorn:cornchowder" },
+	{ "item": "minecraft:cooked_chicken" }
+    ],
+    "result": { "item": "simplecorn:chickencornchowder"}
+}

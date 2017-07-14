@@ -10,17 +10,17 @@ public class GenericFollowHandler {
 	Class animal = null;
 	Item item = null;
 	
-	public GenericFollowHandler(Class animal, Item Item) {
+	public GenericFollowHandler(Class animal, Item item) {
 		super();
 		this.animal = animal;
-		this.item = Item;
+		this.item = item;
 	}
 	
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {
 		 if(animal.isInstance(event.getEntity()) && !event.getWorld().isRemote){
-			 EntityAnimal animal = (EntityAnimal)event.getEntity();
-			 animal.tasks.addTask(8, new EntityAITempt(animal, 1.0D, item, false));
+			 EntityAnimal theAnimal = (EntityAnimal)event.getEntity();
+			 theAnimal.tasks.addTask(8, new EntityAITempt(theAnimal, 1.0D, item, false));
 		 }
 	}
 }

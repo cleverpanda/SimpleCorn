@@ -23,8 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MyEntityFireworkRocket extends Entity{
-	
-	private static final DataParameter<ItemStack> FIREWORK_ITEM = EntityDataManager.<ItemStack>createKey(MyEntityFireworkRocket.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<ItemStack> FIREWORK_ITEM = EntityDataManager.<ItemStack>createKey(MyEntityFireworkRocket.class, DataSerializers.ITEM_STACK);
 	/** The age of the firework in ticks. */
 	public int fireworkAge;
 	/** The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes. */
@@ -85,7 +84,7 @@ public class MyEntityFireworkRocket extends Entity{
 
 		for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
 		{
-			;
+			//iterating
 		}
 
 		while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -115,7 +114,7 @@ public class MyEntityFireworkRocket extends Entity{
 
 		if (this.world.isRemote && this.fireworkAge % 2 < 2)
 		{
-			this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX, this.posY - 0.3D, this.posZ, this.rand.nextGaussian() * 0.05D, -this.motionY * 0.5D, this.rand.nextGaussian() * 0.05D, new int[0]);
+			this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX, this.posY - 0.3D, this.posZ, this.rand.nextGaussian() * 0.05D, -this.motionY * 0.5D, this.rand.nextGaussian() * 0.05D, 0);
 		}
 
 		if (!this.world.isRemote && this.fireworkAge > this.lifetime)
@@ -138,8 +137,7 @@ public class MyEntityFireworkRocket extends Entity{
 			{
 				nbttagcompound = itemstack.getTagCompound().getCompoundTag("Fireworks");
 			}
-
-			//this.world.makeFireworks(this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, nbttagcompound);
+			
 			Minecraft.getMinecraft().effectRenderer.addEffect(EntityParticlePopcornFX.generatePopcornParticles(world, this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, nbttagcompound, fireworkAge)); 
 		}
 
@@ -167,7 +165,7 @@ public class MyEntityFireworkRocket extends Entity{
 
 	public static void registerFixesFireworkRocket(DataFixer fixer)
 	{
-		fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(MyEntityFireworkRocket.class, new String[] {"FireworksItem"}));
+		fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(MyEntityFireworkRocket.class, "FireworksItem"));
 	}
 
 	/**

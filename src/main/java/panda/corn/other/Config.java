@@ -5,6 +5,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class Config {
 	
+	private Config() {}
+	
 	public static int cobFood;
 	public static float cobSat;
 	public static int roastedFood;
@@ -20,11 +22,13 @@ public class Config {
 	public static int growChance;
 	public static int ethanolvolume;
 	public static int numkernels;
+	public static int plantoilvolume;
+	public static int clochedropamount;
 
 	
 	public static void preInit(FMLPreInitializationEvent event){
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		
+		String ieCategory = "Immersive Engineering";
 		config.load();
 		cobFood = config.getInt("VALUE_FOOD_COB", Configuration.CATEGORY_GENERAL, 1, 1, 20,"Hunger value of corn cobs");
 		cobSat = config.getFloat("VALUE_SATURATION_COB",  Configuration.CATEGORY_GENERAL, 0.3F, 0F, 1F, "Saturation value of corn cobs");
@@ -45,9 +49,9 @@ public class Config {
 		generationWeight =  config.getInt("VALUE_CORN_FIELD_GENERATION", Configuration.CATEGORY_GENERAL, 45, 0, 100,"The relative chance of spawning corn fields. The small houses are 3, Blacksmiths are 15. higher is lower.");
 		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 4, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
 		
-		ethanolvolume = config.getInt("VALUE_IE_FERMENTER_ETHANOL_VOLUME",  Configuration.CATEGORY_GENERAL, 120, 0, 1000, "Amount of ethanol in mB that corn produces in an IE fermenter");
-		numkernels = config.getInt("VALUE_NUMKERNELS",Configuration.CATEGORY_GENERAL,2,0,100,"The number of kernels you get fr crafting a cob");
-		
+		plantoilvolume = config.getInt("VALUE_IE_FESQUEEZER_OIL_VOLUME",  ieCategory, 100, 0, 1000, "Amount of plant oil in mB that kernels produces in an IE squeezer");
+		ethanolvolume = config.getInt("VALUE_IE_FERMENTER_ETHANOL_VOLUME",  ieCategory, 120, 0, 1000, "Amount of ethanol in mB that corn produces in an IE fermenter");
+		clochedropamount = config.getInt("VALUE_NUM_DROPS_CLOCHE",ieCategory,2,0,100,"The number of corn cobs you get from growing corn in a garden cloche");
 		config.save();
 	}
 }

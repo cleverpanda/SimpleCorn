@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +32,6 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
 		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, .875D, 1.0D),
 		 new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
-	private Block previousblock;
 	
 	public BlockCorn()
 	{
@@ -84,71 +82,59 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     
 
     @Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-	{
-		int j = state.getValue(AGE).intValue();
-	//states  are on the bottom,have blocks above, or corn is done, do not grow them
-		if( j != 9 && j!= 10 && j!= 11){
-			if (worldIn.getBlockState(pos.down()).getBlock() == this || canBlockStay(worldIn, pos,state))
-			{
-				if (worldIn.isAirBlock(pos.up()) || j == 4 || j == 7)
-				{
-					if (worldIn.getLightFromNeighbors(pos.up()) >= 9)
-					{
-						if (rand.nextInt(Config.growChance) == 1)
-						{
-							//Then Corn can grow
-							if(j == 0 || j == 1 || j == 2){
-								worldIn.setBlockState(pos, this.getStateFromMeta(j+1));
-							}
-							else
-								if(j == 3){
-									worldIn.setBlockState(pos, this.getStateFromMeta(4));
-									worldIn.setBlockState(pos.up(), this.getStateFromMeta(5));
-								}
-							if(j == 5){
-								worldIn.setBlockState(pos, this.getStateFromMeta(6));
-							}
-							if(j == 6){
-								worldIn.setBlockState(pos, this.getStateFromMeta(7));
-								worldIn.setBlockState(pos.up(), this.getStateFromMeta(8));
-							}
-							if(j == 8){
-								worldIn.setBlockState(pos, this.getStateFromMeta(11));
-								worldIn.setBlockState(pos.down(), this.getStateFromMeta(10));
-								worldIn.setBlockState(pos.down(2), this.getStateFromMeta(9));
-							}
-							if(j == 4 || j == 7){
-								if(worldIn.getBlockState(pos.up()).getBlock() == this){
-									if (rand.nextInt(Config.growChance*2) == 0)
-									{
-										int k = worldIn.getBlockState(pos.up()).getValue(AGE).intValue();
-										if(k == 5){
-											worldIn.setBlockState(pos.up(), this.getStateFromMeta(6));
-										}
-										if(k == 6){
-											worldIn.setBlockState(pos.up(), this.getStateFromMeta(7));
-											worldIn.setBlockState(pos.up(2), this.getStateFromMeta(8));
-										}
-										if(k== 7){
-											worldIn.setBlockState(pos.up(2), this.getStateFromMeta(11));
-											worldIn.setBlockState(pos.up(), this.getStateFromMeta(10));
-											worldIn.setBlockState(pos, this.getStateFromMeta(9));
-										}
-										if(k == 8){
-											worldIn.setBlockState(pos.up(), this.getStateFromMeta(11));
-											worldIn.setBlockState(pos, this.getStateFromMeta(10));
-											worldIn.setBlockState(pos.down(), this.getStateFromMeta(9));
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+    	int j = state.getValue(AGE).intValue();
+    	//states  are on the bottom,have blocks above, or corn is done, do not grow them
+    	if( j != 9 && j!= 10 && j!= 11 && worldIn.getBlockState(pos.down()).getBlock() == this || canBlockStay(worldIn, pos,state)
+    			&& worldIn.isAirBlock(pos.up()) || j == 4 || j == 7 && worldIn.getLightFromNeighbors(pos.up()) >= 9 
+    			&& rand.nextInt(Config.growChance) == 1){
+
+    		//Then Corn can grow
+    		if(j == 0 || j == 1 || j == 2){
+    			worldIn.setBlockState(pos, this.getStateFromMeta(j+1));
+    		}
+    		else
+    			if(j == 3){
+    				worldIn.setBlockState(pos, this.getStateFromMeta(4));
+    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(5));
+    			}
+    		if(j == 5){
+    			worldIn.setBlockState(pos, this.getStateFromMeta(6));
+    		}
+    		if(j == 6){
+    			worldIn.setBlockState(pos, this.getStateFromMeta(7));
+    			worldIn.setBlockState(pos.up(), this.getStateFromMeta(8));
+    		}
+    		if(j == 8){
+    			worldIn.setBlockState(pos, this.getStateFromMeta(11));
+    			worldIn.setBlockState(pos.down(), this.getStateFromMeta(10));
+    			worldIn.setBlockState(pos.down(2), this.getStateFromMeta(9));
+    		}
+    		if(j == 4 || j == 7 && worldIn.getBlockState(pos.up()).getBlock() == this && rand.nextInt(Config.growChance*2) == 0){
+
+
+    			int k = worldIn.getBlockState(pos.up()).getValue(AGE).intValue();
+    			if(k == 5){
+    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(6));
+    			}
+    			if(k == 6){
+    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(7));
+    				worldIn.setBlockState(pos.up(2), this.getStateFromMeta(8));
+    			}
+    			if(k== 7){
+    				worldIn.setBlockState(pos.up(2), this.getStateFromMeta(11));
+    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(10));
+    				worldIn.setBlockState(pos, this.getStateFromMeta(9));
+    			}
+    			if(k == 8){
+    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(11));
+    				worldIn.setBlockState(pos, this.getStateFromMeta(10));
+    				worldIn.setBlockState(pos.down(), this.getStateFromMeta(9));
+    			}
+    		}
+    	}
+    }
 
 	@Override
 	protected Item getSeed()
@@ -180,13 +166,6 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 			return this.canPlaceBlockAt(world, pos);
 		}
 	}
-
-	/*@Override
-	protected boolean canPlaceBlockOn(Block ground)
-	{
-		Block block = Block.getBlockFromName("farmland").getStateFromMeta(7).getBlock();
-		return ground == block;
-	}*/
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -225,17 +204,14 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 	@Override
 	protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
 		Block block = world.getBlockState(pos.down()).getBlock();
-		if (block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this){
-			return true;
-		}
-		return false;
+		return block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this;
 	}  
 
 	@Override
@@ -272,7 +248,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 				out = new ItemStack(ObjectList.COB);
 			}
 		}
-		super.spawnAsEntity(world,pos,out);
+		Block.spawnAsEntity(world,pos,out);
 	}
 
 
@@ -297,7 +273,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 				out = new ItemStack(ObjectList.KERNELS);
 			}
 
-			super.spawnAsEntity(world,pos,out);
+			Block.spawnAsEntity(world,pos,out);
 			world.setBlockToAir(pos);
 
 		}

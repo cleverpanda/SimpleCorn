@@ -123,13 +123,6 @@ public class EntityParticlePopcornFX extends Particle
             this.setExpired();
         }
     }
-    
-    @Override
-	public int getBrightnessForRender(float p_189214_1_) {
-		return super.getBrightnessForRender(p_189214_1_);
-	}
-
-
 
 	private boolean isFarFromCamera()
     {
@@ -137,9 +130,9 @@ public class EntityParticlePopcornFX extends Particle
         return minecraft == null || minecraft.getRenderViewEntity() == null || minecraft.getRenderViewEntity().getDistanceSq(this.posX, this.posY, this.posZ) >= 256.0D;
     }
     
-    private void createParticle(double p_92034_1_, double p_92034_3_, double p_92034_5_, double p_92034_7_, double p_92034_9_, double p_92034_11_)
+    private void createParticle(double x, double y, double z, double vx, double vy, double vz)
     {
-        EntityParticlePopcornFX particle = new EntityParticlePopcornFX(this.world, p_92034_1_, p_92034_3_, p_92034_5_, p_92034_7_, p_92034_9_, p_92034_11_);
+        EntityParticlePopcornFX particle = new EntityParticlePopcornFX(this.world, x, y, z, vx, vy, vz);
 
         Minecraft.getMinecraft().effectRenderer.addEffect(particle); 
 
@@ -178,13 +171,13 @@ public class EntityParticlePopcornFX extends Particle
     /**
      * Creates a creeper-shaped or star-shaped explosion.
      */
-    private void createShaped(double speed, double[][] shape, boolean p_92038_8_)
+    private void createShaped(double speed, double[][] shape, boolean star)
     {
         double d0 = shape[0][0];
         double d1 = shape[0][1];
         this.createParticle(this.posX, this.posY, this.posZ, d0 * speed, d1 * speed, 0.0D);
         float f = this.rand.nextFloat() * (float)Math.PI;
-        double d2 = p_92038_8_ ? 0.034D : 0.34D;
+        double d2 = star ? 0.034D : 0.34D;
 
         for (int i = 0; i < 3; ++i)
         {
