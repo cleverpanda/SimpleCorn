@@ -295,11 +295,6 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
 
         return nonnulllist;
     }
-	@Override
-	public boolean isHidden()
-    {
-        return true;
-    }
 
     /**
      * Used to determine if this recipe can fit in a grid of the given width/height

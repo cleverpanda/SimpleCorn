@@ -24,6 +24,7 @@ public class Config {
 	public static int numkernels;
 	public static int plantoilvolume;
 	public static int clochedropamount;
+	public static boolean useeasyharvesting;
 
 	
 	public static void preInit(FMLPreInitializationEvent event){
@@ -48,6 +49,8 @@ public class Config {
 		kernelWeight =  config.getInt("VALUE_KERNEL_DROP", Configuration.CATEGORY_GENERAL, 8, 1, 100,"The relative chance of dropping kernels from grass. Seeds are 10");
 		generationWeight =  config.getInt("VALUE_CORN_FIELD_GENERATION", Configuration.CATEGORY_GENERAL, 45, 0, 100,"The relative chance of spawning corn fields. The small houses are 3, Blacksmiths are 15. higher is lower.");
 		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 4, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
+		
+		useeasyharvesting = config.getBoolean("USE_EASY_HARVESTING", Configuration.CATEGORY_GENERAL, false, "Allow right click harvesting");
 		
 		plantoilvolume = config.getInt("VALUE_IE_FESQUEEZER_OIL_VOLUME",  ieCategory, 100, 0, 1000, "Amount of plant oil in mB that kernels produces in an IE squeezer");
 		ethanolvolume = config.getInt("VALUE_IE_FERMENTER_ETHANOL_VOLUME",  ieCategory, 120, 0, 1000, "Amount of ethanol in mB that corn produces in an IE fermenter");

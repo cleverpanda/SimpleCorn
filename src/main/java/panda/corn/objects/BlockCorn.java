@@ -13,12 +13,14 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -87,7 +89,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     	int j = state.getValue(AGE).intValue();
     	//states  are on the bottom,have blocks above, or corn is done, do not grow them
     	if( j != 9 && j!= 10 && j!= 11 && worldIn.getBlockState(pos.down()).getBlock() == this || canBlockStay(worldIn, pos,state)
-    			&& worldIn.isAirBlock(pos.up()) || j == 4 || j == 7 && worldIn.getLightFromNeighbors(pos.up()) >= 9 
+    			 || j == 4 || j == 7 && worldIn.getLightFromNeighbors(pos.up()) >= 9 
     			&& rand.nextInt(Config.growChance) == 1){
 
     		//Then Corn can grow
@@ -95,14 +97,14 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     			worldIn.setBlockState(pos, this.getStateFromMeta(j+1));
     		}
     		else
-    			if(j == 3){
+    			if(j == 3 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
     				worldIn.setBlockState(pos, this.getStateFromMeta(4));
     				worldIn.setBlockState(pos.up(), this.getStateFromMeta(5));
     			}
     		if(j == 5){
     			worldIn.setBlockState(pos, this.getStateFromMeta(6));
     		}
-    		if(j == 6){
+    		if(j == 6 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
     			worldIn.setBlockState(pos, this.getStateFromMeta(7));
     			worldIn.setBlockState(pos.up(), this.getStateFromMeta(8));
     		}
@@ -118,11 +120,11 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     			if(k == 5){
     				worldIn.setBlockState(pos.up(), this.getStateFromMeta(6));
     			}
-    			if(k == 6){
+    			if(k == 6 && worldIn.getBlockState(pos.up(2)).getMaterial().isReplaceable()){
     				worldIn.setBlockState(pos.up(), this.getStateFromMeta(7));
     				worldIn.setBlockState(pos.up(2), this.getStateFromMeta(8));
     			}
-    			if(k== 7){
+    			if(k == 7){
     				worldIn.setBlockState(pos.up(2), this.getStateFromMeta(11));
     				worldIn.setBlockState(pos.up(), this.getStateFromMeta(10));
     				worldIn.setBlockState(pos, this.getStateFromMeta(9));
@@ -182,7 +184,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 	@Override
 	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
 	{
-		return state.getValue(AGE).intValue() < 9;
+		return state.getValue(AGE).intValue() < 9 ;
 	}
 
 	@Override
@@ -211,7 +213,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
 		Block block = world.getBlockState(pos.down()).getBlock();
-		return block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this;
+		return block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this && world.getBlockState(pos).getMaterial().isReplaceable();
 	}  
 
 	@Override
@@ -235,8 +237,25 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		}
 	}
 
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		
+		if(!Config.useeasyharvesting){ return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);}
+		
+		int s = state.getValue(AGE).intValue();
+		 //if corn is ripe
+		if(s >=9 ){
+			worldIn.setBlockToAir(pos);
+			if(s == 9){
+				worldIn.setBlockState(pos, this.getDefaultState());
+			}
+			return true;
+		}
+		
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+	}
 	private void dropcorn(World world, BlockPos pos, IBlockState state){
-		ItemStack out = new ItemStack(ObjectList.KERNELS);
+		ItemStack out = ItemStack.EMPTY;
 
 		int s = state.getValue(AGE).intValue();
 		//if corn is ripe
@@ -244,11 +263,12 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 			float chance = world.rand.nextFloat();
 			if( chance >= .40){
 				out = new ItemStack(ObjectList.COB,2);
-			}else if( chance >=.1){
+			}else{
 				out = new ItemStack(ObjectList.COB);
 			}
+			Block.spawnAsEntity(world,pos,out);
 		}
-		Block.spawnAsEntity(world,pos,out);
+		
 	}
 
 
@@ -264,16 +284,14 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 			int s = state.getValue(AGE).intValue();
 			if(s == 9 || s == 10 || s == 11 ){ //if corn is ripe
 				if(world.rand.nextFloat() >= .40){
-					out = new ItemStack(ObjectList.COB,1);
-				}else{
 					out = new ItemStack(ObjectList.COB,2);
+				}else{
+					out = new ItemStack(ObjectList.COB,1);
 				}
-
-			}else{
-				out = new ItemStack(ObjectList.KERNELS);
+				Block.spawnAsEntity(world,pos,out);
 			}
 
-			Block.spawnAsEntity(world,pos,out);
+			
 			world.setBlockToAir(pos);
 
 		}
