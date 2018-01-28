@@ -92,7 +92,7 @@ public class Corn {
             recipes.remove(fireworkRecipe);
             recipes.add(new MyRecipeFireworks());
         } else {
-            log.error("Something in Recipes Borked.");
+            log.error("Something in Recipes Broked.");
         }
 	}
 }
