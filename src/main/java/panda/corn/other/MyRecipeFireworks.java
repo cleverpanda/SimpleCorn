@@ -2,12 +2,10 @@ package panda.corn.other;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import panda.corn.registry.ObjectList;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemDye;
@@ -17,15 +15,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import panda.corn.init.ModItems;
 
 public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
-    private ItemStack resultItem= ItemStack.EMPTY;
-    private boolean popcorn=false;
+    private ItemStack resultItem = ItemStack.EMPTY;
+    private boolean popcorn = false;
 
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     @Override
 	public boolean matches(InventoryCrafting inv, World worldIn)
     {
@@ -67,7 +63,7 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
                 {
                     ++i1;
                 }
-                else if (itemstack.getItem() == ObjectList.KERNELS)
+                else if (itemstack.getItem() == ModItems.KERNELS)
                 {
                     ++i1;
                     ++k;
@@ -104,7 +100,7 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
             if (j >= 1 && i == 1 && i1 == 0)
             {
                 if(popcorn){
-                	this.resultItem = new ItemStack(ObjectList.POP_FIREWORK, 3);
+                	this.resultItem = new ItemStack(ModItems.POP_FIREWORK, 3);
                 }else{
                 	this.resultItem = new ItemStack(Items.FIREWORKS, 3);
                 }
@@ -161,7 +157,7 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
                         {
                             nbttagcompound2.setBoolean("Trail", true);
                         }
-                        else if (itemstack2.getItem() == ObjectList.KERNELS)
+                        else if (itemstack2.getItem() == ModItems.KERNELS)
                         {
                         	nbttagcompound2.setBoolean("Popcorn", true);
                             ispopcorn = true;

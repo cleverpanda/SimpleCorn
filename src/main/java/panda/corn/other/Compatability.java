@@ -1,6 +1,9 @@
 package panda.corn.other;
 
-import panda.corn.registry.ObjectList;
+import panda.corn.ConfigSimpleCorn;
+import panda.corn.Corn;
+import panda.corn.init.ModBlocks;
+import panda.corn.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -23,10 +26,15 @@ public class Compatability {
 	private Compatability() {}
 	
 	public static void immersiveEngineering(){
-		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),Config.ethanolvolume), ItemStack.EMPTY, ObjectList.COB, 6400);
-		SqueezerRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("plantoil"), Config.plantoilvolume), ItemStack.EMPTY, ObjectList.KERNELS, 6400);
+		
+		if(! Corn.ISIEINSTALLED){
+			return;
+		}
+		
+		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),ConfigSimpleCorn.ethanolvolume), ItemStack.EMPTY, ModItems.COB, 6400);
+		SqueezerRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("plantoil"), ConfigSimpleCorn.plantoilvolume), ItemStack.EMPTY, ModItems.KERNELS, 6400);
 
-		Block blockCrop = ObjectList.CORN;
+		Block blockCrop = ModBlocks.CORN;
 		BelljarHandler.DefaultPlantHandler cornBelljarHandler = new BelljarHandler.DefaultPlantHandler()
 		{
 			private HashSet<ComparableItemStack> validSeeds = new HashSet<>();
@@ -42,13 +50,13 @@ public class Compatability {
 
 				int age = Math.min(6, Math.round(growth*6));
 
-				if(age==4){
+				if(age == 4){
 					return new IBlockState[]{blockCrop.getStateFromMeta(age),blockCrop.getStateFromMeta(age+1)};
 				}
-				if(age==5){
+				if(age == 5){
 					return new IBlockState[]{blockCrop.getStateFromMeta(4),blockCrop.getStateFromMeta(6)};
 				}
-				if(age==6){
+				if(age == 6){
 					return new IBlockState[]{blockCrop.getStateFromMeta(9),blockCrop.getStateFromMeta(11)};
 				}
 				return new IBlockState[]{blockCrop.getStateFromMeta(age)};
@@ -57,35 +65,11 @@ public class Compatability {
 			@SideOnly(Side.CLIENT)
 			public float getRenderSize(ItemStack seed, ItemStack soil, float growth, TileEntity tile)
 			{
-				return .875f;
+				return 0.875f;
 			}
 		};
 		BelljarHandler.registerHandler(cornBelljarHandler);
-		cornBelljarHandler.register(new ItemStack(ObjectList.KERNELS), new ItemStack[]{new ItemStack(ObjectList.COB,Config.clochedropamount),new ItemStack(ObjectList.KERNELS)},new ItemStack(Blocks.DIRT), blockCrop.getDefaultState());
+		cornBelljarHandler.register(new ItemStack(ModItems.KERNELS), new ItemStack[]{new ItemStack(ModItems.COB,ConfigSimpleCorn.clochedropamount)},new ItemStack(Blocks.DIRT), blockCrop.getDefaultState());
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

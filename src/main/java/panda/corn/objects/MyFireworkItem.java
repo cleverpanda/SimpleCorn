@@ -16,18 +16,11 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
 import com.google.common.collect.Lists;
 
 public class MyFireworkItem extends ItemFirework{
-	/**
-     * Called when a Block is right-clicked with this Item
-     */
-	public MyFireworkItem(){
-		this.setRegistryName("popfirework");
-
-	}
 	
 	@Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -57,7 +50,7 @@ public class MyFireworkItem extends ItemFirework{
             {
                 if (nbttagcompound.hasKey("Flight", 99))
                 {
-                    tooltip.add(I18n.translateToLocal("item.fireworks.flight") + " " + nbttagcompound.getByte("Flight"));
+                    tooltip.add(I18n.format("item.fireworks.flight") + " " + nbttagcompound.getByte("Flight"));
                 }
 
                 NBTTagList nbttaglist = nbttagcompound.getTagList("Explosions", 10);
@@ -77,7 +70,7 @@ public class MyFireworkItem extends ItemFirework{
 
                             tooltip.addAll(list);
                         }
-                    tooltip.add(I18n.translateToLocal("item.simplecorn.poppedcorn.name"));  
+                    tooltip.add(I18n.format("item.simplecorn.poppedcorn.name"));  
                 }
             }
         }

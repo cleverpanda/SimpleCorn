@@ -3,8 +3,8 @@ package panda.corn.gen;
 import java.util.List;
 import java.util.Random;
 
+import panda.corn.init.ModBlocks;
 import panda.corn.objects.BlockCorn;
-import panda.corn.registry.ObjectList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -26,7 +26,7 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 		super(start, type);
 		this.setCoordBaseMode(facing);
 		this.boundingBox = box;
-		this.crop = ObjectList.CORN;
+		this.crop = ModBlocks.CORN;
 	}
 
 	@Override
