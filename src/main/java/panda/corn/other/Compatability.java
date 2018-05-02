@@ -26,11 +26,6 @@ public class Compatability {
 	private Compatability() {}
 	
 	public static void immersiveEngineering(){
-		
-		if(! Corn.ISIEINSTALLED){
-			return;
-		}
-		
 		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),ConfigSimpleCorn.ethanolvolume), ItemStack.EMPTY, ModItems.COB, 6400);
 		SqueezerRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("plantoil"), ConfigSimpleCorn.plantoilvolume), ItemStack.EMPTY, ModItems.KERNELS, 6400);
 
