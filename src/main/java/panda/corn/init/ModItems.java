@@ -36,7 +36,6 @@ public final class ModItems {
 	public static void register(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		
-
 		registry.register(COB);
 		registry.register(KERNELS);
 		registry.register(ROASTED_CORN);
