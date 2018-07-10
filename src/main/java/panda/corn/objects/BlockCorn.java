@@ -88,29 +88,34 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     	//System.out.println(ConfigSimpleCorn.growChance);
     	//states  are on the bottom,have blocks above, or corn is done, do not grow them
     	if( age < 9 && (worldIn.getBlockState(pos.down()).getBlock() == this || canBlockStay(worldIn, pos,state))
-    			&& worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(ConfigSimpleCorn.growChance) == 0){
-    		//Then Corn can grow
-    		if(age < 3){
-    			worldIn.setBlockState(pos, this.getStateFromMeta(age + 1));
+    			&& worldIn.getLightFromNeighbors(pos.up()) >= 9) {
+    		
+    		boolean canGrow = (rand.nextInt(ConfigSimpleCorn.growChance) == 0);
+    		
+    		if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, canGrow)) {
+	    		//Then Corn can grow
+	    		if(age < 3){
+	    			worldIn.setBlockState(pos, this.getStateFromMeta(age + 1));
+	    		}
+	    		else
+	    			if(age == 3 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
+	    				worldIn.setBlockState(pos, this.getStateFromMeta(4));
+	    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(5));
+	    			}
+	    		if(age == 5){
+	    			worldIn.setBlockState(pos, this.getStateFromMeta(6));
+	    		}
+	    		if(age == 6 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
+	    			worldIn.setBlockState(pos, this.getStateFromMeta(7));
+	    			worldIn.setBlockState(pos.up(), this.getStateFromMeta(8));
+	    		}
+	    		if(age == 8){
+	    			worldIn.setBlockState(pos, this.getStateFromMeta(11));
+	    			worldIn.setBlockState(pos.down(), this.getStateFromMeta(10));
+	    			worldIn.setBlockState(pos.down(2), this.getStateFromMeta(9));
+	    		}
+	    		net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
     		}
-    		else
-    			if(age == 3 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
-    				worldIn.setBlockState(pos, this.getStateFromMeta(4));
-    				worldIn.setBlockState(pos.up(), this.getStateFromMeta(5));
-    			}
-    		if(age == 5){
-    			worldIn.setBlockState(pos, this.getStateFromMeta(6));
-    		}
-    		if(age == 6 && worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
-    			worldIn.setBlockState(pos, this.getStateFromMeta(7));
-    			worldIn.setBlockState(pos.up(), this.getStateFromMeta(8));
-    		}
-    		if(age == 8){
-    			worldIn.setBlockState(pos, this.getStateFromMeta(11));
-    			worldIn.setBlockState(pos.down(), this.getStateFromMeta(10));
-    			worldIn.setBlockState(pos.down(2), this.getStateFromMeta(9));
-    		}
-
     	}
     }
     
@@ -123,8 +128,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 			float chance = world.rand.nextInt(4);
 			out = new ItemStack(getCrop(),chance > 2? 2:1); //40% chance to get 2
 			Block.spawnAsEntity(world,pos,out);
-		}
-		
+		}		
 	}
 
 	@Override
