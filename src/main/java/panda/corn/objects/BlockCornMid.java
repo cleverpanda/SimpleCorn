@@ -22,7 +22,7 @@ public class BlockCornMid extends BlockCorn {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModItems.COB);
+		return new ItemStack(ModItems.CORNCOB);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class BlockCornMid extends BlockCorn {
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		if (getAge(state) != getMaxAge()) drops.add(new ItemStack(ModItems.COB));
+		if (getAge(state) == getMaxAge()) drops.add(new ItemStack(ModItems.CORNCOB));
 		//TODO: Add secondary cob drop.
 	}
 
@@ -50,11 +50,15 @@ public class BlockCornMid extends BlockCorn {
 	public IBlockState getStateFromMeta(int meta) {
 		return withAge(meta);
 	}
-	
+
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return getAge(state);
 	}
 
+	@Override
+	public boolean checkFertile(World world, BlockPos pos) {
+		return canBlockStay(world, pos, getDefaultState());
+	}
 
 }

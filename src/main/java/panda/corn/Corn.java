@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.RegistryManager;
@@ -55,8 +54,8 @@ public class Corn {
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		ConfigSimpleCorn.load(config);
 		
-		MinecraftForge.EVENT_BUS.register(new GenericFollowHandler(EntityPig.class, ModItems.COB));
-		MinecraftForge.EVENT_BUS.register(new GenericBreedHandler(EntityPig.class,ModItems.COB));
+		MinecraftForge.EVENT_BUS.register(new GenericFollowHandler(EntityPig.class, ModItems.CORNCOB));
+		MinecraftForge.EVENT_BUS.register(new GenericBreedHandler(EntityPig.class,ModItems.CORNCOB));
 		
 		MinecraftForge.EVENT_BUS.register(new GenericFollowHandler(EntityChicken.class,ModItems.KERNELS));
 		MinecraftForge.EVENT_BUS.register(new GenericBreedHandler(EntityChicken.class,ModItems.KERNELS));
@@ -71,16 +70,12 @@ public class Corn {
 		if(Corn.isIEInstalled){
 			Compatability.immersiveEngineering();
 		}
-		
-		proxy.registerOreDicts();
-		
-		GameRegistry.addSmelting(ModItems.COB, new ItemStack(ModItems.ROASTED_CORN), .2F);
-		GameRegistry.addSmelting(ModItems.KERNELS, new ItemStack(ModItems.POPCORN,2), .01F);
+
 		MinecraftForge.addGrassSeed(new ItemStack(ModItems.KERNELS), ConfigSimpleCorn.kernelWeight);
 		if(ConfigSimpleCorn.PopcornFireworks){
 		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
 		}
-		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.COB, new EntityVillager.PriceInfo(18, 22)));
+		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.CORNCOB, new EntityVillager.PriceInfo(18, 22)));
 	}
 	
 	@EventHandler

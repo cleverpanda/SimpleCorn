@@ -3,9 +3,6 @@ package panda.corn.gen;
 import java.util.List;
 import java.util.Random;
 
-import panda.corn.init.ModBlocks;
-import panda.corn.objects.BlockCorn;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -14,10 +11,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import panda.corn.init.ModBlocks;
+import panda.corn.objects.BlockCorn;
 
 public class ComponentCornField extends StructureVillagePieces.Village{
 
-	private Block crop;
+	private BlockCorn crop;
 
 	public ComponentCornField() {}
 
@@ -57,10 +56,10 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 		if(crop != null){
 			for (i = 1; i <= 7; ++i)
 			{
-				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
 			}
 		}
 

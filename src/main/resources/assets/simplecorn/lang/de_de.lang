@@ -1,4 +1,6 @@
-tile.corn.name=Mais
+tile.simplecorn.corn.name=Mais
+tile.simplecorn.corn_mid.name=Mais
+tile.simplecorn.corn_top.name=Mais
 item.corncob.name=Maiskolben
 item.roastedcorn.name=Gerösteter Mais
 item.cornchowder.name=Maissuppe

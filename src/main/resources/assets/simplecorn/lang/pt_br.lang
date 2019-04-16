@@ -1,4 +1,6 @@
 ﻿tile.simplecorn.corn.name=Milho
+tile.simplecorn.corn_mid.name=Milho
+tile.simplecorn.corn_top.name=Milho
 item.simplecorn.corncob.name=Espiga de Milho
 item.simplecorn.roastedcorn.name=Milho Assado
 item.simplecorn.cornchowder.name=Mingau de Milho

@@ -1,4 +1,6 @@
 tile.simplecorn.corn.name=Corn
+tile.simplecorn.corn_mid.name=Corn
+tile.simplecorn.corn_top.name=Corn
 item.simplecorn.corncob.name=Ear Of Corn
 item.simplecorn.roastedcorn.name=Roasted Corn
 item.simplecorn.cornchowder.name=Corn Chowder

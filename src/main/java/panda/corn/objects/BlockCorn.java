@@ -94,7 +94,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, AGE);
+		return new BlockStateContainer(this, getAgeProperty());
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	protected Item getCrop() {
-		return ModItems.COB;
+		return ModItems.CORNCOB;
 	}
 
 	@Override
@@ -173,13 +173,19 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 		{
 			if (!worldIn.isAreaLoaded(pos, 1)) //Make sure we should bother checking
 				return;
-			if (worldIn.getLightFromNeighbors(pos.up()) >= 9 && worldIn.getBlockState(pos.down()).getBlock().isFertile(worldIn, pos.down())) //Check for light and water
+			if (worldIn.getLightFromNeighbors(pos.up()) >= 9 && checkFertile(worldIn, pos)) //Check for light and water
 			{
 				boolean canGrow = rand.nextInt(ConfigSimpleCorn.growChance) == 0;
 				if (!isMaxAge(state)) {
 					if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, canGrow)) {
 						worldIn.setBlockState(pos, withAge(getAge(state) + 1));
 						ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+						if (isMaxAge(worldIn.getBlockState(pos)) && getNextState() != null && worldIn.getBlockState(pos = pos.up()).getBlock().isReplaceable(worldIn, pos)) {
+							if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
+								worldIn.setBlockState(pos, getNextState());
+								ForgeHooks.onCropsGrowPost(worldIn, pos, getNextState(), worldIn.getBlockState(pos));
+							}
+						}
 					}
 				} else if (getNextState() != null && worldIn.getBlockState(pos = pos.up()).getBlock().isReplaceable(worldIn, pos)) {
 					if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
@@ -189,6 +195,10 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 				}
 			}
 		}
+	}
+
+	public boolean checkFertile(World world, BlockPos pos) {
+		return world.getBlockState(pos.down()).getBlock().isFertile(world, pos.down());
 	}
 
 }

@@ -20,13 +20,13 @@ public class ClientProxy extends CommonProxy {
     public static void registerModels(ModelRegistryEvent event) {
 		RenderingRegistry.registerEntityRenderingHandler(MyEntityFireworkRocket.class, RenderFireworkEntity.INSTANCE);
 		
-		registerItemModel(ModItems.CHICKEN_CHOWDER);
-		registerItemModel(ModItems.CHOWDER);
-		registerItemModel(ModItems.COB);
+		registerItemModel(ModItems.CHICKENCORNCHOWDER);
+		registerItemModel(ModItems.CORNCHOWDER);
+		registerItemModel(ModItems.CORNCOB);
 		registerItemModel(ModItems.KERNELS);
-		registerItemModel(ModItems.POP_FIREWORK);
-		registerItemModel(ModItems.POPCORN);
-		registerItemModel(ModItems.ROASTED_CORN);
+		registerItemModel(ModItems.POPFIREWORK);
+		registerItemModel(ModItems.POPPEDCORN);
+		registerItemModel(ModItems.ROASTEDCORN);
 		registerItemModel(Item.getItemFromBlock(ModBlocks.CORN));
 	}
 
