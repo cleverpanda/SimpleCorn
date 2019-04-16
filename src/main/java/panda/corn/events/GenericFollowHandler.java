@@ -7,10 +7,10 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class GenericFollowHandler {
-	Class animal = null;
+	Class<?> animal = null;
 	Item item = null;
 	
-	public GenericFollowHandler(Class animal, Item item) {
+	public GenericFollowHandler(Class<?> animal, Item item) {
 		super();
 		this.animal = animal;
 		this.item = item;

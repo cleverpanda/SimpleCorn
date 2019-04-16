@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
 import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
@@ -25,7 +26,7 @@ public class CornWorldGen implements IVillageCreationHandler {
 	}
 
 	@Override
-	public Village buildComponent(PieceWeight villagePiece, Start startPiece,List pieces, Random random, int x, int y, int z,EnumFacing facing, int p5) {
+	public Village buildComponent(PieceWeight villagePiece, Start startPiece,List<StructureComponent> pieces, Random random, int x, int y, int z,EnumFacing facing, int p5) {
 		return ComponentCornField.createPiece(startPiece, pieces, random, x, y, z, facing, p5);
 	}
 }

@@ -57,10 +57,10 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 		if(crop != null){
 			for (i = 1; i <= 7; ++i)
 			{
-				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
-				this.setBlockState(worldIn, ((BlockCorn)crop).withAge(MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
+				this.setBlockState(worldIn, ((BlockCorn)crop).getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
 			}
 		}
 
@@ -76,7 +76,7 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 		return true;
 	}
 
-	public static ComponentCornField createPiece(StructureVillagePieces.Start start, List listin, Random rand, int x, int y, int z, EnumFacing facing, int type)
+	public static ComponentCornField createPiece(StructureVillagePieces.Start start, List<StructureComponent> listin, Random rand, int x, int y, int z, EnumFacing facing, int type)
 	{
 		StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 7, 4, 9, facing);
 		return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(listin, structureboundingbox) == null ? new ComponentCornField(start, type, rand, structureboundingbox, facing) : null;

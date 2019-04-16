@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class GenericBreedHandler {
 	//Majority of code found from Minecraftforums user creepytroll69
-	Class animal = null;
+	Class<?> animal = null;
 	Item breedItem = null;
 
-	public GenericBreedHandler(Class animal, Item breedItem) {
+	public GenericBreedHandler(Class<?> animal, Item breedItem) {
 		super();
 		this.animal = animal;
 		this.breedItem = breedItem;
@@ -24,7 +24,7 @@ public class GenericBreedHandler {
 	@SubscribeEvent
 	public void breed(EntityInteract event)
 	{
-		if (event.getEntityPlayer().inventory.getCurrentItem() != null && event.getEntityPlayer().inventory.getCurrentItem().getItem() == breedItem && animal.isInstance(event.getTarget()))
+		if (event.getEntityPlayer().inventory.getCurrentItem() != null && event.getEntityPlayer().inventory.getCurrentItem() != ItemStack.EMPTY && event.getEntityPlayer().inventory.getCurrentItem().getItem() == breedItem && animal.isInstance(event.getTarget()))
 		{
 
 			ItemStack itemstack = event.getEntityPlayer().inventory.getCurrentItem();
@@ -37,7 +37,7 @@ public class GenericBreedHandler {
 
 					if (itemstack.isEmpty())
 					{
-						event.getEntityPlayer().inventory.setInventorySlotContents(event.getEntityPlayer().inventory.currentItem, (ItemStack)null);
+						event.getEntityPlayer().inventory.setInventorySlotContents(event.getEntityPlayer().inventory.currentItem, ItemStack.EMPTY);
 					}
 				}
 

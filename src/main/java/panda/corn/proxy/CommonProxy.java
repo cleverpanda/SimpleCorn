@@ -9,10 +9,11 @@ public class CommonProxy {
 
     public static void registerModels(ModelRegistryEvent event) {}
 
-    
     public void registerOreDicts(){
-    	OreDictionary.registerOre("cropCorn", ModBlocks.CORN);
+    	OreDictionary.registerOre("seedsCorn", ModItems.KERNELS);
+    	OreDictionary.registerOre("seedCorn", ModItems.KERNELS);
     	OreDictionary.registerOre("listAllVeggies", ModItems.COB);	
+    	OreDictionary.registerOre("cropCorn", ModItems.COB);	
     	OreDictionary.registerOre("listAllVeggies", ModItems.ROASTED_CORN);
     	OreDictionary.registerOre("listAllseed", ModItems.KERNELS);
     }

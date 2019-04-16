@@ -43,7 +43,7 @@ public class MyEntityFireworkRocket extends Entity{
 		int i = 1;
 
 
-		if (!givenItem.isEmpty() && givenItem.hasTagCompound())
+		if (givenItem != null && !givenItem.isEmpty() && givenItem.hasTagCompound())
         {
             this.dataManager.set(FIREWORK_ITEM, givenItem.copy());
             NBTTagCompound nbttagcompound = givenItem.getTagCompound();

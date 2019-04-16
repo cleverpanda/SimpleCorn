@@ -147,7 +147,7 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
                     {
                     	if (itemstack2.getItem() == Items.DYE)
                         {
-                    		properties.add(Integer.valueOf(ItemDye.DYE_COLORS[itemstack2.getMetadata() & 15]));
+                    		properties.add(ItemDye.DYE_COLORS[itemstack2.getMetadata() & 15]);
                         }
                         else if (itemstack2.getItem() == Items.GLOWSTONE_DUST)
                         {
@@ -182,11 +182,11 @@ public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegis
                 }
                 if(ispopcorn){
                 	properties.clear();
-                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
-                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[11]));
-                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[14]));
-                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[15]));
-                	properties.add(Integer.valueOf(ItemDye.DYE_COLORS[3]));
+                	properties.add(ItemDye.DYE_COLORS[11]);
+                	properties.add(ItemDye.DYE_COLORS[11]);
+                	properties.add(ItemDye.DYE_COLORS[14]);
+                	properties.add(ItemDye.DYE_COLORS[15]);
+                	properties.add(ItemDye.DYE_COLORS[3]);
                 }
                 int[] aint1 = new int[properties.size()];
 

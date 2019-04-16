@@ -12,6 +12,7 @@ public class RenderFireworkEntity implements IRenderFactory<Entity> {
 
 	public static final RenderFireworkEntity INSTANCE = new RenderFireworkEntity();
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Render<? super Entity> createRenderFor(RenderManager manager) {
 		return new RenderSnowball(manager, Items.FIREWORKS, Minecraft.getMinecraft().getRenderItem());

@@ -28,7 +28,6 @@ public class ClientProxy extends CommonProxy {
 		registerItemModel(ModItems.POPCORN);
 		registerItemModel(ModItems.ROASTED_CORN);
 		registerItemModel(Item.getItemFromBlock(ModBlocks.CORN));
-
 	}
 
 	public static void registerItemModel(Item item) {

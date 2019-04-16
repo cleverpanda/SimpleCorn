@@ -55,7 +55,7 @@ public class MyFireworkItem extends ItemFirework{
 
                 NBTTagList nbttaglist = nbttagcompound.getTagList("Explosions", 10);
 
-                if (nbttaglist != null && !nbttaglist.hasNoTags())
+                if (nbttaglist != null && !nbttaglist.isEmpty())
                 {
                         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(1);
                         List<String> list = Lists.<String>newArrayList();

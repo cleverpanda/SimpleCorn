@@ -16,7 +16,7 @@ public final class ModBlocks {
 	public static final Block CORN = simply(new BlockCorn(),"corn");
 	
 	public static Block simply(Block block, String name) {
-		return block.setRegistryName(Corn.MODID, name).setUnlocalizedName(Corn.MODID + "." + name);
+		return block.setRegistryName(Corn.MODID, name).setTranslationKey(Corn.MODID + "." + name);
 	}
 
 	@SubscribeEvent

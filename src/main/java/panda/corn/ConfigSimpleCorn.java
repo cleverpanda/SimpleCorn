@@ -33,13 +33,12 @@ public class ConfigSimpleCorn {
 		chowderFood = config.getInt("VALUE_FOOD_CHOWDER", Configuration.CATEGORY_GENERAL, 7, 1, 20,"Hunger value of corn chowder");		
 		chicchowderFood = config.getInt("VALUE_FOOD_CHICKEN_CHOWDER", Configuration.CATEGORY_GENERAL, 10, 1, 20,"Hunger value of chicken corn chowder");
 		
-		
 		popcornFood = config.getInt("VALUE_FOOD_POPCORN", Configuration.CATEGORY_GENERAL, 1, 1, 20,"Hunger value of popcorn");
 		popcornSat = config.getFloat("VALUE_SATURATION_POPCORN",  Configuration.CATEGORY_GENERAL, 0.1F, 0F, 1F, "Saturation value of popcorn");
 		
 		kernelWeight =  config.getInt("VALUE_KERNEL_DROP", Configuration.CATEGORY_GENERAL, 8, 1, 100,"The relative chance of dropping kernels from grass. Seeds are 10");
 		generationWeight =  config.getInt("VALUE_CORN_FIELD_GENERATION", Configuration.CATEGORY_GENERAL, 45, 0, 100,"The relative chance of spawning corn fields. The small houses are 3, Blacksmiths are 15. higher is lower.");
-		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 4, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
+		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 3, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
 		
 		useeasyharvesting = config.getBoolean("USE_EASY_HARVESTING", Configuration.CATEGORY_GENERAL, false, "Allow right click harvesting");
 		
