@@ -1,6 +1,8 @@
 //Translate by: Dorzar / VeryHardChamp
 //Act. 30/07/2017
 tile.simplecorn.corn.name=Maíz
+tile.simplecorn.corn_mid.name=Maíz
+tile.simplecorn.corn_top.name=Maíz
 item.simplecorn.corncob.name=Mazorca de maíz
 item.simplecorn.roastedcorn.name=Maíz tostado
 item.simplecorn.cornchowder.name=Sopa de maíz

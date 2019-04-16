@@ -101,7 +101,7 @@ public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> impleme
             if (j >= 1 && i == 1 && i1 == 0)
             {
                 if(popcorn){
-                	this.resultItem = new ItemStack(ModItems.POP_FIREWORK, 3);
+                	this.resultItem = new ItemStack(ModItems.POPFIREWORK, 3);
                 }else{
                 	this.resultItem = new ItemStack(Items.FIREWORKS, 3);
                 }

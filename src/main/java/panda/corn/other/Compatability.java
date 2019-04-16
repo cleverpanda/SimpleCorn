@@ -23,7 +23,7 @@ public class Compatability {
 	private Compatability() {}
 	
 	public static void immersiveEngineering(){
-		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),ConfigSimpleCorn.ethanolvolume), ItemStack.EMPTY, ModItems.COB, 6400);
+		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),ConfigSimpleCorn.ethanolvolume), ItemStack.EMPTY, ModItems.CORNCOB, 6400);
 		SqueezerRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("plantoil"), ConfigSimpleCorn.plantoilvolume), ItemStack.EMPTY, ModItems.KERNELS, 6400);
 
 		BelljarHandler.DefaultPlantHandler cornBelljarHandler = new BelljarHandler.DefaultPlantHandler(){
@@ -55,12 +55,12 @@ public class Compatability {
 			}
 		};
 		BelljarHandler.registerHandler(cornBelljarHandler);
-		cornBelljarHandler.register(new ItemStack(ModItems.KERNELS), new ItemStack[]{new ItemStack(ModItems.COB,ConfigSimpleCorn.clochedropamount)},new ItemStack(Blocks.DIRT), ModBlocks.CORN.getDefaultState());
+		cornBelljarHandler.register(new ItemStack(ModItems.KERNELS), new ItemStack[]{new ItemStack(ModItems.CORNCOB,ConfigSimpleCorn.clochedropamount)},new ItemStack(Blocks.DIRT), ModBlocks.CORN.getDefaultState());
 	}
 	
 	private static IBlockState getState(int age){
 		IBlockState blockCrop = ModBlocks.CORN.getDefaultState();
-		return blockCrop.withProperty(BlockCorn.CORNAGE, age);
+		return blockCrop.withProperty(BlockCorn.AGE, age);
 	}
 
 }
