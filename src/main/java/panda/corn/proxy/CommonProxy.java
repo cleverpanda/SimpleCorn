@@ -2,7 +2,6 @@ package panda.corn.proxy;
 
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.oredict.OreDictionary;
-import panda.corn.init.ModBlocks;
 import panda.corn.init.ModItems;
 
 public class CommonProxy {
