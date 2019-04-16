@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,6 +29,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class BlockCorn extends BlockCrops implements IGrowable{
 	public static final int MAXAGE = 11;
@@ -57,10 +59,26 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     }
 	
 	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return blockState.getValue(getAgeProperty()) >= 4? 0.2f : 0.0f;
+    }
+	
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         super.breakBlock(worldIn, pos, state);
-        worldIn.notifyNeighborsOfStateChange(pos.up(), this, true);
+        if(worldIn.getBlockState(pos.up()).getBlock() == this){
+            worldIn.notifyNeighborsOfStateChange(pos.up(), this, true);
+        }
+        if(worldIn.getBlockState(pos.down()).getBlock() == this){
+        	if(worldIn.getBlockState(pos.up()).getMaterial().isReplaceable()){
+        		this.dropBlockAsItem(worldIn, pos.down(), state, 0);
+                worldIn.setBlockToAir(pos.down());
+                return;
+        	}
+            worldIn.notifyNeighborsOfStateChange(pos.down(), this, true);
+        }
     }
 	
     protected final boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
@@ -76,22 +94,16 @@ public class BlockCorn extends BlockCrops implements IGrowable{
             return false;
         }
     }
-
-	protected static float getGrowthChance(Block blockIn, World worldIn, BlockPos pos)
-    {
-		return 1/((float)ConfigSimpleCorn.growChance + 1);
-    }
 	
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        super.getDrops(drops, world, pos, state, 0);
         int age = getAge(state);
         Random rand = world instanceof World ? ((World)world).rand : new Random();
 
         if (age > 9) //Top two ripe blocks only
         {
-            for (int i = 0; i < 2 + fortune; ++i)//79% ^(2 rolls) = 80% of getting 2, 20% chance to get 1
+            for (int i = 0; i < ConfigSimpleCorn.dropRolls + fortune; ++i)//79% ^(2 rolls) = 80% of getting 2, 20% chance to get 1
             {
                 if (rand.nextInt(8) <= 7) ///79%
                 {
@@ -99,7 +111,9 @@ public class BlockCorn extends BlockCrops implements IGrowable{
                 }
             }
         }else{
+        	if (age != 9){
         	drops.add(new ItemStack(this.getSeed()));
+            }
         }
     }
 	
@@ -115,25 +129,28 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		IBlockState aboveMe = world.getBlockState(pos.up());
 		int myAge = me.getValue(getAgeProperty());
 		//We are a lower block
-		if( lowerBlocks.contains(myAge) ){
+		if( lowerBlocks.contains(myAge) ){   
 			//Below us must be fertile soil AND above us must be a higher state OR we are lower than 4
-			if( ( belowMe.getBlock() == Blocks.FARMLAND || belowMe.getBlock().isFertile(world, pos.down()) ) && ( myAge < 4 || aboveMe.getBlock() == this && aboveMe.getValue(getAgeProperty()) > myAge)){
+			if( ((belowMe.getBlock() == Blocks.FARMLAND || belowMe.getBlock().isFertile(world, pos.down()) ) &&  (myAge < 4 || ( aboveMe.getBlock() == this && aboveMe.getValue(getAgeProperty()) > myAge ))) ){
 				return true;
 			}
+			return false;
 		}else
 		//We are a middle block
 		if( middleBlocks.contains( myAge ) ){
 			//Below me must be a lower block, AND above me must be a top block
-			if(aboveMe.getBlock() == this && belowMe.getBlock() == this && lowerBlocks.contains(belowMe.getValue(getAgeProperty())) && upperBlocks.contains(aboveMe.getValue(getAgeProperty())) ){
+			if(belowMe.getBlock() == this && lowerBlocks.contains(belowMe.getValue(getAgeProperty())) ){
 				return true;
 			}
+			return false;
 		}else
 		//We are an upper block
 		if( upperBlocks.contains( myAge ) ){
 			//Below me must be a middle block
-			if(belowMe.getBlock() == this && lowerBlocks.contains(belowMe.getValue(getAgeProperty()))){
+			if(belowMe.getBlock() == this && middleBlocks.contains(belowMe.getValue(getAgeProperty()))){
 				return true;
 			}
+			return false;
 		}
 
 		return this.canPlaceBlockAt(world, pos);
@@ -148,8 +165,8 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		Block block = world.getBlockState(pos.down()).getBlock();
-		return block.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || block == this && world.getBlockState(pos).getMaterial().isReplaceable();
+		Block blockBelow = world.getBlockState(pos.down()).getBlock();
+		return blockBelow.canSustainPlant(world.getBlockState(pos.down()), world, pos, EnumFacing.UP, this) || blockBelow == this || world.getBlockState(pos).getMaterial().isReplaceable();
 	}
     
     @Override
@@ -182,6 +199,25 @@ public class BlockCorn extends BlockCrops implements IGrowable{
     }
 	
 	@Override
+    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
+    {
+        if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
+        {
+            @SuppressWarnings("deprecation")
+			List<ItemStack> drops = getDrops(worldIn, pos, state, fortune); // use the old method until it gets removed, for backward compatibility
+            chance = ForgeEventFactory.fireBlockHarvesting(drops, worldIn, pos, state, fortune, chance, false, harvesters.get());
+
+            for (ItemStack drop : drops)
+            {
+                if (worldIn.rand.nextFloat() <= chance)
+                {
+                    spawnAsEntity(worldIn, pos, drop);
+                }
+            }
+        }
+    }
+	
+	@Override
     protected Item getCrop()
     {
         return ModItems.COB;
@@ -190,7 +226,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 	@Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return state.getValue(CORNAGE).intValue() >= 9 ? this.getCrop() : this.getSeed();
+        return state.getValue(CORNAGE).intValue() > 9 ? this.getCrop() : state.getValue(CORNAGE).intValue() == 9 ? Items.AIR : this.getSeed();
     }
 
 	@Override
@@ -222,7 +258,7 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		return this.withAge(meta);
 	}
 
-	//TODO how is the different from update tick?
+	//how is the different from update tick?
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
 		this.updateTick(worldIn, pos, state, rand);
@@ -269,7 +305,6 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		}
 	}
 
-	//TODO
 	@Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
@@ -279,16 +314,16 @@ public class BlockCorn extends BlockCrops implements IGrowable{
 		
     	int age = state.getValue(getAgeProperty());
     	//states  are on the bottom,have blocks above, or corn is done, do not grow them
-    	if( age < 9 && (worldIn.getBlockState(pos.down()).getBlock() == this || canBlockStay(worldIn, pos,state))
+    	Block belowMe = worldIn.getBlockState(pos.down()).getBlock();
+    	if( age < 9 && (belowMe == this || (belowMe == Blocks.FARMLAND || belowMe.isFertile(worldIn, pos.down()) ))
     			&& worldIn.getLightFromNeighbors(pos.up()) >= 9) {
     		
-    		boolean canGrow = (rand.nextInt(ConfigSimpleCorn.growChance) == 0);
-    		
+    		boolean canGrow = rand.nextInt(ConfigSimpleCorn.growChance) == 0;
+    	
     		if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, canGrow)) {
 	    		//Then Corn can grow
 	    		if(age < 3){
 	    			worldIn.setBlockState(pos, this.withAge(age + 1));
-	    			worldIn.setBlockState(pos.up(), this.withAge(5));
 	    		}else
 	    		if(age == 3 && canPlaceBlockAt(worldIn, pos.up())){
 	    			worldIn.setBlockState(pos, this.withAge(4));

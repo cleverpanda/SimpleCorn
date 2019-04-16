@@ -7,6 +7,9 @@
     "ingredients": [
         { "item": "simplecorn:corncob" }
     ],
-    "result": { "item": "simplecorn:kernels"},
-    "count": 2
+    "result": {
+	 "item": "simplecorn:kernels",
+    	 "count": 2
+    }
+
 }

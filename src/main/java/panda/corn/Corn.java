@@ -38,7 +38,7 @@ public class Corn {
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.5.0";
+	public static final String VERSION = "2.5.2";
 	
 	public static boolean isIEInstalled;
 	public Configuration config;
@@ -78,7 +78,9 @@ public class Corn {
 		GameRegistry.addSmelting(ModItems.COB, new ItemStack(ModItems.ROASTED_CORN), .2F);
 		GameRegistry.addSmelting(ModItems.KERNELS, new ItemStack(ModItems.POPCORN,2), .01F);
 		MinecraftForge.addGrassSeed(new ItemStack(ModItems.KERNELS), ConfigSimpleCorn.kernelWeight);
-		RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
+		if(ConfigSimpleCorn.PopcornFireworks){
+		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
+		}
 		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.COB, new EntityVillager.PriceInfo(18, 22)));
 	}
 	

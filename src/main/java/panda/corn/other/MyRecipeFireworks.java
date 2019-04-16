@@ -16,8 +16,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import panda.corn.init.ModItems;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class MyRecipeFireworks extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
+public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     private ItemStack resultItem = ItemStack.EMPTY;
     private boolean popcorn = false;

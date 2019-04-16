@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import panda.corn.ConfigSimpleCorn;
 import panda.corn.Corn;
 import panda.corn.objects.BlockCorn;
 import panda.corn.other.MyRecipeFireworks;
@@ -26,6 +27,8 @@ public final class ModBlocks {
 	
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		event.getRegistry().register(new MyRecipeFireworks().setRegistryName(new ResourceLocation(Corn.MODID+":fireworks")));
+		if(ConfigSimpleCorn.PopcornFireworks){
+			event.getRegistry().register(new MyRecipeFireworks().setRegistryName(new ResourceLocation(Corn.MODID+":fireworks")));
+		}
 	}
 }
