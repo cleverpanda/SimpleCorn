@@ -25,6 +25,16 @@
             "textures":{  
                "crop": "simplecorn:blocks/Corn_11"
             }
+         },
+         "4":{  
+            "textures":{  
+               "crop": "simplecorn:blocks/Corn_1"
+            }
+         },
+         "5":{  
+            "textures":{  
+               "crop": "simplecorn:blocks/Corn_1"
+            }
          }
       }
    }

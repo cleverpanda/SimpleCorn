@@ -3,7 +3,6 @@ package panda.corn.other;
 import panda.corn.ConfigSimpleCorn;
 import panda.corn.init.ModBlocks;
 import panda.corn.init.ModItems;
-import panda.corn.objects.BlockCorn;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -59,8 +58,7 @@ public class Compatability {
 	}
 	
 	private static IBlockState getState(int age){
-		IBlockState blockCrop = ModBlocks.CORN.getDefaultState();
-		return blockCrop.withProperty(BlockCorn.AGE, age);
+		return ModBlocks.CORN.getStateFromMeta(age);
 	}
 
 }

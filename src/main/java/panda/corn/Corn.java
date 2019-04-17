@@ -28,6 +28,7 @@ import panda.corn.gen.ComponentCornField;
 import panda.corn.gen.CornWorldGen;
 import panda.corn.init.ModItems;
 import panda.corn.other.Compatability;
+import panda.corn.other.ThermalCompat;
 import panda.corn.proxy.CommonProxy;
 
 @Mod(modid = Corn.MODID, name = Corn.NAME, version = Corn.VERSION, dependencies = "after:immersiveengineering")
@@ -36,9 +37,10 @@ public class Corn {
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.5.2";
+	public static final String VERSION = "2.5.4";
 	
 	public static boolean isIEInstalled;
+	public static boolean ThermalInstalled;
 	public Configuration config;
 	
 	@Instance(MODID)
@@ -76,11 +78,16 @@ public class Corn {
 		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
 		}
 		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.CORNCOB, new EntityVillager.PriceInfo(18, 22)));
+		
+		if(Corn.ThermalInstalled){
+			ThermalCompat.init();
+		}
 	}
 	
 	@EventHandler
 	public void onConstructionEvent(FMLConstructionEvent event) {
 		isIEInstalled = Loader.isModLoaded("immersiveengineering");
+		ThermalInstalled = Loader.isModLoaded("thermalfoundation");
 	}
 
 }
