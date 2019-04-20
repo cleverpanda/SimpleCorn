@@ -17,11 +17,13 @@ import blusunrize.immersiveengineering.api.crafting.FermenterRecipe;
 import blusunrize.immersiveengineering.api.crafting.SqueezerRecipe;
 import blusunrize.immersiveengineering.api.tool.BelljarHandler;
 
-public class Compatability {
+public class ImmersiveEngineeringCompat {
 	
-	private Compatability() {}
+	private ImmersiveEngineeringCompat() {
+	    throw new IllegalStateException("Utility class");
+	}
 	
-	public static void immersiveEngineering(){
+	public static void init(){
 		FermenterRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("ethanol"),ConfigSimpleCorn.ethanolvolume), ItemStack.EMPTY, ModItems.CORNCOB, 6400);
 		SqueezerRecipe.addRecipe(new FluidStack(FluidRegistry.getFluid("plantoil"), ConfigSimpleCorn.plantoilvolume), ItemStack.EMPTY, ModItems.KERNELS, 6400);
 

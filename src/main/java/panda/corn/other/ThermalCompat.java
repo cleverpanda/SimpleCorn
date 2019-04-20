@@ -6,6 +6,11 @@ import net.minecraft.item.ItemStack;
 import panda.corn.init.ModItems;
 
 public class ThermalCompat {
+	
+	private ThermalCompat() {
+	    throw new IllegalStateException("Utility class");
+	}
+	
 	public static void init(){
 		InsolatorManager.addRecipe(4800, 1200, new ItemStack(ModItems.KERNELS), ItemFertilizer.fertilizerBasic, new ItemStack(ModItems.CORNCOB,2));
 		InsolatorManager.addRecipe(7200, 1800, new ItemStack(ModItems.KERNELS), ItemFertilizer.fertilizerRich, new ItemStack(ModItems.CORNCOB,4));

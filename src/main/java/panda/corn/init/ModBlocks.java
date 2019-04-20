@@ -8,22 +8,26 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import panda.corn.ConfigSimpleCorn;
-import panda.corn.Corn;
-import panda.corn.objects.BlockCorn;
-import panda.corn.objects.BlockCornMid;
-import panda.corn.objects.BlockCornTop;
+import panda.corn.SimpleCorn;
+import panda.corn.blocks.BlockCorn;
+import panda.corn.blocks.BlockCornMid;
+import panda.corn.blocks.BlockCornTop;
 import panda.corn.other.MyRecipeFireworks;
 
-@EventBusSubscriber(modid = Corn.MODID)
-@ObjectHolder(Corn.MODID)
+@EventBusSubscriber(modid = SimpleCorn.MODID)
+@ObjectHolder(SimpleCorn.MODID)
 public final class ModBlocks {
+	
+	private ModBlocks() {
+	    throw new IllegalStateException("Utility class");
+	}
 
 	public static final BlockCorn CORN = null;
 	public static final BlockCornMid CORN_MID = null;
 	public static final BlockCornTop CORN_TOP = null;
 	
 	public static Block simply(Block block, String name) {
-		return block.setRegistryName(Corn.MODID, name).setTranslationKey(Corn.MODID + "." + name);
+		return block.setRegistryName(SimpleCorn.MODID, name).setTranslationKey(SimpleCorn.MODID + "." + name);
 	}
 
 	@SubscribeEvent
@@ -36,8 +40,8 @@ public final class ModBlocks {
 	
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		if(ConfigSimpleCorn.PopcornFireworks){
-			event.getRegistry().register(new MyRecipeFireworks().setRegistryName(new ResourceLocation(Corn.MODID+":fireworks")));
+		if(ConfigSimpleCorn.popcornFireworks){
+			event.getRegistry().register(new MyRecipeFireworks().setRegistryName(new ResourceLocation(SimpleCorn.MODID+":fireworks")));
 		}
 	}
 }

@@ -153,8 +153,9 @@ public class EntityParticlePopcornFX extends Particle
             {
                 for (int k = -size; k <= size; ++k)
                 {
-                    double d3 = j + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
-                    double d4 = i + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
+                    double d3 = j + (this.rand.nextGaussian()) * 0.5D;
+                  //this is equivalent to the triangular distribution of [-1,1] but there is no simpler way to write it
+                    double d4 = i + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D; 
                     double d5 = k + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
                     double d6 = MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5) / speed + this.rand.nextGaussian() * 0.05D;
                     this.createParticle(d0, d1, d2, d3 / d6, d4 / d6, d5 / d6);
@@ -229,7 +230,7 @@ public class EntityParticlePopcornFX extends Particle
 
 
 
-	public static Particle generatePopcornParticles(World parWorld,double parX, double parY, double parZ,double parMotionX, double parMotionY, double parMotionZ,NBTTagCompound nbt,int age)
+	public static Particle generatePopcornParticles(World parWorld,double parX, double parY, double parZ,double parMotionX, double parMotionY, double parMotionZ,NBTTagCompound nbt)
     {
         
         Particle particle = new EntityParticlePopcornFX(parWorld, parX, parY, parZ, parMotionX, parMotionY, parMotionZ);

@@ -14,13 +14,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import panda.corn.ConfigSimpleCorn;
-import panda.corn.Corn;
-import panda.corn.objects.ItemKernels;
-import panda.corn.objects.MyFireworkItem;
+import panda.corn.SimpleCorn;
+import panda.corn.items.ItemCornFirework;
+import panda.corn.items.ItemKernels;
 
-@EventBusSubscriber(modid = Corn.MODID)
-@ObjectHolder(Corn.MODID)
+@EventBusSubscriber(modid = SimpleCorn.MODID)
+@ObjectHolder(SimpleCorn.MODID)
 public final class ModItems {
+	
+	private ModItems() {
+	    throw new IllegalStateException("Utility class");
+	}
 
 	public static final Item CORNCOB = null;
 	public static final Item KERNELS = null;
@@ -31,7 +35,7 @@ public final class ModItems {
 	public static final Item POPFIREWORK = null;
 
 	private static Item simply(Item item, String name) {
-		return item.setRegistryName(Corn.MODID, name).setTranslationKey(Corn.MODID + "." + name);
+		return item.setRegistryName(SimpleCorn.MODID, name).setTranslationKey(SimpleCorn.MODID + "." + name);
 	}
 
 	@SubscribeEvent
@@ -49,7 +53,7 @@ public final class ModItems {
 		}, "poppedcorn"));
 		registry.register(simply(new ItemSoup(ConfigSimpleCorn.chowderFood), "cornchowder"));
 		registry.register(simply(new ItemSoup(ConfigSimpleCorn.chicchowderFood), "chickencornchowder"));
-		registry.register(simply(new MyFireworkItem(), "popfirework"));
+		registry.register(simply(new ItemCornFirework(), "popfirework"));
 
 		registry.register(new ItemBlock(ModBlocks.CORN).setRegistryName(ModBlocks.CORN.getRegistryName()));
 	}

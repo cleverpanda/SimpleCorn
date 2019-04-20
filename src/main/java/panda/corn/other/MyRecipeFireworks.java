@@ -22,6 +22,7 @@ public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> impleme
 {
     private ItemStack resultItem = ItemStack.EMPTY;
     private boolean popcorn = false;
+    private String explosion = "Explosion";
 
     @Override
 	public boolean matches(InventoryCrafting inv, World worldIn)
@@ -116,9 +117,9 @@ public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> impleme
                     {
                         ItemStack itemstack3 = inv.getStackInSlot(k2);
 
-                        if (itemstack3.getItem() == Items.FIREWORK_CHARGE && itemstack3.hasTagCompound() && itemstack3.getTagCompound().hasKey("Explosion", 10))
+                        if (itemstack3.getItem() == Items.FIREWORK_CHARGE && itemstack3.hasTagCompound() && itemstack3.getTagCompound().hasKey(explosion, 10))
                         {
-                            nbttaglist.appendTag(itemstack3.getTagCompound().getCompoundTag("Explosion"));
+                            nbttaglist.appendTag(itemstack3.getTagCompound().getCompoundTag(explosion));
                         }
                     }
 
@@ -198,7 +199,7 @@ public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> impleme
 
                 nbttagcompound2.setIntArray("Colors", aint1);
                 nbttagcompound2.setByte("Type", b0);
-                nbttagcompound.setTag("Explosion", nbttagcompound2);
+                nbttagcompound.setTag(explosion, nbttagcompound2);
                 this.resultItem.setTagCompound(nbttagcompound);
                 return true;
             }
@@ -233,7 +234,7 @@ public class MyRecipeFireworks extends IForgeRegistryEntry.Impl<IRecipe> impleme
 
                 if (!this.resultItem.isEmpty() && this.resultItem.hasTagCompound())
                 {
-                    NBTTagCompound nbttagcompound4 = this.resultItem.getTagCompound().getCompoundTag("Explosion");
+                    NBTTagCompound nbttagcompound4 = this.resultItem.getTagCompound().getCompoundTag(explosion);
 
                     if (nbttagcompound4 == null)
                     {

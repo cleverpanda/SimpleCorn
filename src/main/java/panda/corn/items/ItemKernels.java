@@ -1,4 +1,4 @@
-package panda.corn.objects;
+package panda.corn.items;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

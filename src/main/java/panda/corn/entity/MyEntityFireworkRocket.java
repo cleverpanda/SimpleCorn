@@ -138,7 +138,7 @@ public class MyEntityFireworkRocket extends Entity{
 				nbttagcompound = itemstack.getTagCompound().getCompoundTag("Fireworks");
 			}
 			
-			Minecraft.getMinecraft().effectRenderer.addEffect(EntityParticlePopcornFX.generatePopcornParticles(world, this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, nbttagcompound, fireworkAge)); 
+			Minecraft.getMinecraft().effectRenderer.addEffect(EntityParticlePopcornFX.generatePopcornParticles(world, this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, nbttagcompound)); 
 		}
 
 		super.handleStatusUpdate(id);

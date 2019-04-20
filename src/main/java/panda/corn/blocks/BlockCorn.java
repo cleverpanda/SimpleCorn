@@ -1,4 +1,4 @@
-package panda.corn.objects;
+package panda.corn.blocks;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 5);
 
-	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+	protected static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
 
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), //0
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), //1
@@ -51,6 +51,18 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 		setHardness(0.3F);
 		this.setSoundType(SoundType.PLANT);
 		this.disableStats();
+	}
+	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+
+		if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN_MID){
+			world.destroyBlock(pos.down(), true);
+			world.destroyBlock(pos.down(2), true);
+		}else
+			if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN){
+				world.destroyBlock(pos.down(), true);
+			}    
 	}
 
 	@Override
@@ -119,7 +131,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	public int getMaxAge() {
-		return 5;
+		return 4;
 	}
 
 	@Override
@@ -158,8 +170,14 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		//TODO: Re-implement: if(!ConfigSimpleCorn.useeasyharvesting)
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+
+		if(ConfigSimpleCorn.useeasyharvesting){
+			if(isMaxAge(state)){
+				return worldIn.setBlockState(pos, this.getDefaultState());
+			}
+		}
+		
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);		
 	}
 
 	public IBlockState getNextState() {

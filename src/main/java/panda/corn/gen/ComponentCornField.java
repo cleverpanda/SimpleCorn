@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import panda.corn.blocks.BlockCorn;
 import panda.corn.init.ModBlocks;
-import panda.corn.objects.BlockCorn;
 
 public class ComponentCornField extends StructureVillagePieces.Village{
 

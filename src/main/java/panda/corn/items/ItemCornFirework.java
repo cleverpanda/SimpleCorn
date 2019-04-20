@@ -1,4 +1,4 @@
-package panda.corn.objects;
+package panda.corn.items;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
 import com.google.common.collect.Lists;
 
-public class MyFireworkItem extends ItemFirework{
+public class ItemCornFirework extends ItemFirework{
 	
 	@Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)

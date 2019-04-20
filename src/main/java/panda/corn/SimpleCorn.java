@@ -27,24 +27,24 @@ import panda.corn.events.ToolTipHandler;
 import panda.corn.gen.ComponentCornField;
 import panda.corn.gen.CornWorldGen;
 import panda.corn.init.ModItems;
-import panda.corn.other.Compatability;
+import panda.corn.other.ImmersiveEngineeringCompat;
 import panda.corn.other.ThermalCompat;
 import panda.corn.proxy.CommonProxy;
 
-@Mod(modid = Corn.MODID, name = Corn.NAME, version = Corn.VERSION, dependencies = "after:immersiveengineering")
+@Mod(modid = SimpleCorn.MODID, name = SimpleCorn.NAME, version = SimpleCorn.VERSION, dependencies = "after:immersiveengineering")
 
-public class Corn {	
+public class SimpleCorn {	
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.5.4";
+	public static final String VERSION = "2.5.5";
 	
-	public static boolean isIEInstalled;
-	public static boolean ThermalInstalled;
+	private static boolean isIEInstalled;
+	private static boolean isThermalInstalled;
 	public Configuration config;
 	
 	@Instance(MODID)
-	public static Corn instance;
+	public static SimpleCorn instance;
 	
 	@SidedProxy(clientSide = "panda.corn.proxy.ClientProxy", serverSide = "panda.corn.proxy.ServerProxy")
 	public static CommonProxy proxy;
@@ -69,25 +69,26 @@ public class Corn {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-		if(Corn.isIEInstalled){
-			Compatability.immersiveEngineering();
+		if(isIEInstalled){
+			ImmersiveEngineeringCompat.init();
 		}
-
-		MinecraftForge.addGrassSeed(new ItemStack(ModItems.KERNELS), ConfigSimpleCorn.kernelWeight);
-		if(ConfigSimpleCorn.PopcornFireworks){
-		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
-		}
-		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.CORNCOB, new EntityVillager.PriceInfo(18, 22)));
 		
-		if(Corn.ThermalInstalled){
+		if(isThermalInstalled){
 			ThermalCompat.init();
 		}
+		
+		if(ConfigSimpleCorn.popcornFireworks){
+		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
+		}
+		
+		MinecraftForge.addGrassSeed(new ItemStack(ModItems.KERNELS), ConfigSimpleCorn.kernelWeight);
+		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.CORNCOB, new EntityVillager.PriceInfo(18, 22)));
 	}
 	
 	@EventHandler
-	public void onConstructionEvent(FMLConstructionEvent event) {
+	public static void onConstructionEvent(FMLConstructionEvent event) {
 		isIEInstalled = Loader.isModLoaded("immersiveengineering");
-		ThermalInstalled = Loader.isModLoaded("thermalfoundation");
+		isThermalInstalled = Loader.isModLoaded("thermalfoundation");
 	}
 
 }
