@@ -5,7 +5,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(Side.SERVER)
 public class ServerProxy extends CommonProxy {
-	private ServerProxy() {
+	public ServerProxy() {
 	    super();
 	}
 	

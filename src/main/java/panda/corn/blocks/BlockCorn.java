@@ -30,7 +30,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 5);
 
-	protected static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
 
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), //0
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), //1
@@ -172,7 +172,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		if(ConfigSimpleCorn.useeasyharvesting){
-			if(isMaxAge(state)){
+			if(state.getValue(this.getAgeProperty()) > getMaxAge()){
 				return worldIn.setBlockState(pos, this.getDefaultState());
 			}
 		}

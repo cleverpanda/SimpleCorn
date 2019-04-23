@@ -78,7 +78,7 @@ public class BlockCornMid extends BlockCorn {
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		if(ConfigSimpleCorn.useeasyharvesting){
-			if(isMaxAge(state)){
+			if(state.getValue(this.getAgeProperty()) > getMaxAge()){
 				return worldIn.setBlockState(pos.down(), ModBlocks.CORN.getDefaultState());
 			}
 		}

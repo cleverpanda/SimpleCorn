@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "item": "simplecorn:corncob"
+    },
+    "title": {
+      "translate": "simplecorn.advancements.husbandry.plant_corn.title"
+    },
+    "description": {
+      "translate": "simplecorn.advancements.husbandry.plant_corn.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "corn": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "simplecorn:corn"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "corn"
+    ]
+  ]
+}

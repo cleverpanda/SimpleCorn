@@ -31,13 +31,13 @@ import panda.corn.other.ImmersiveEngineeringCompat;
 import panda.corn.other.ThermalCompat;
 import panda.corn.proxy.CommonProxy;
 
-@Mod(modid = SimpleCorn.MODID, name = SimpleCorn.NAME, version = SimpleCorn.VERSION, dependencies = "after:immersiveengineering")
+@Mod(modid = SimpleCorn.MODID, name = SimpleCorn.NAME, version = SimpleCorn.VERSION, dependencies = "after:immersiveengineering;"+"after:thermalexpansion")
 
 public class SimpleCorn {	
 	
 	public static final String MODID = "simplecorn";
 	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.5.5";
+	public static final String VERSION = "2.5.7";
 	
 	private static boolean isIEInstalled;
 	private static boolean isThermalInstalled;
@@ -88,7 +88,7 @@ public class SimpleCorn {
 	@EventHandler
 	public static void onConstructionEvent(FMLConstructionEvent event) {
 		isIEInstalled = Loader.isModLoaded("immersiveengineering");
-		isThermalInstalled = Loader.isModLoaded("thermalfoundation");
+		isThermalInstalled = Loader.isModLoaded("thermalexpansion");
 	}
 
 }
