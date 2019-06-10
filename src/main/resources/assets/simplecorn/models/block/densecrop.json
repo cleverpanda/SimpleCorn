@@ -1,6 +1,7 @@
 {
 "ambientocclusion": false,
 "textures": {
+    "crop": "simplecorn:blocks/corn_1",
     "particle": "#crop"
 },
 "elements": [ 

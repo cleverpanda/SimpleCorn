@@ -8,32 +8,32 @@
       "age":{  
          "0":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_9"
+               "crop": "simplecorn:blocks/corn_9"
             }
          },
          "1":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_12"
+               "crop": "simplecorn:blocks/corn_12"
             }
          },
          "2":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_1"
+               "crop": "simplecorn:blocks/corn_1"
             }
          },
          "3":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_1"
+               "crop": "simplecorn:blocks/corn_1"
             }
          },
          "4":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_1"
+               "crop": "simplecorn:blocks/corn_1"
             }
          },
          "5":{  
             "textures":{  
-               "crop": "simplecorn:blocks/Corn_1"
+               "crop": "simplecorn:blocks/corn_1"
             }
          }
       }

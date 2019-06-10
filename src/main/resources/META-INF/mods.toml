@@ -1,0 +1,13 @@
+modLoader="javafml" #mandatory
+loaderVersion="[26,)"
+issueTrackerURL="https://github.com/cleverpanda/SimpleCorn/issues"
+# A list of mods - how many allowed here is determined by the individual mod loader
+[[mods]] #mandatory
+modId="simplecorn" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Simple Corn" #mandatory
+displayURL="https://minecraft.curseforge.com/projects/simple-corn" #optional
+authors="Cleverpanda" #optional
+description='''
+Corn like Mojang might make!
+'''

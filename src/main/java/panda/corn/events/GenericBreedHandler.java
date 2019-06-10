@@ -2,13 +2,14 @@ package panda.corn.events;
 
 import java.util.Random;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 
 public class GenericBreedHandler {
 	//Majority of code found from Minecraftforums user creepytroll69
@@ -29,9 +30,9 @@ public class GenericBreedHandler {
 
 			ItemStack itemstack = event.getEntityPlayer().inventory.getCurrentItem();
 
-			if (((EntityAgeable) event.getTarget()).getGrowingAge() == 0 && !((EntityAnimal)event.getTarget()).isInLove())
+			if (((AgeableEntity) event.getTarget()).getGrowingAge() == 0 && !((AnimalEntity)event.getTarget()).isInLove())
 			{
-				if (!event.getEntityPlayer().capabilities.isCreativeMode)
+				if (!event.getEntityPlayer().isCreative())
 				{
 					itemstack.shrink(1);
 
@@ -41,7 +42,7 @@ public class GenericBreedHandler {
 					}
 				}
 
-				((EntityAnimal)event.getTarget()).setInLove(event.getEntityPlayer());
+				((AnimalEntity)event.getTarget()).setInLove(event.getEntityPlayer());
 				Random rand = new Random();
 
 				for (int i = 0; i < 7; ++i)
@@ -51,7 +52,10 @@ public class GenericBreedHandler {
 					double d2 = event.getWorld().rand.nextGaussian() * 0.02D;
 
 					if (event.getWorld().isRemote){
-						event.getTarget().world.spawnParticle(EnumParticleTypes.HEART, event.getTarget().posX + rand.nextFloat() * event.getTarget().width * 2.0F - event.getTarget().width, event.getTarget().posY + 0.5D + rand.nextFloat() * event.getTarget().height, event.getTarget().posZ + rand.nextFloat() * event.getTarget().width * 2.0F - event.getTarget().width, d0, d1, d2);	
+						event.getTarget().world.addParticle(ParticleTypes.HEART, event.getTarget().posX + rand.nextFloat()
+						* event.getTarget().getWidth() * 2.0F - event.getTarget().getWidth(), event.getTarget().posY + 0.5D
+						+ rand.nextFloat() * event.getTarget().getHeight(), event.getTarget().posZ + rand.nextFloat()
+						* event.getTarget().getWidth() * 2.0F - event.getTarget().getWidth(), d0, d1, d2);	
 					}
 				}
 			}

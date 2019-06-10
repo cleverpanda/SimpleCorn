@@ -2,221 +2,212 @@ package panda.corn.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.Items;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
+import net.minecraft.world.chunk.BlockStateContainer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import panda.corn.ConfigSimpleCorn;
 import panda.corn.init.ModBlocks;
 import panda.corn.init.ModItems;
 
-public class BlockCorn extends BlockCrops implements IGrowable {
+public class BlockCorn extends CropsBlock implements IGrowable {
 
-	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 5);
+	public static final IntegerProperty CORNAGE = BlockStateProperties.AGE_0_5;
 
-	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+	 protected static final VoxelShape[] SHAPES = new VoxelShape[]{
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, .875D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, .875D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+		Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
+	};
 
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), //0
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), //1
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), //2
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), //3
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), //4
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), //9
 
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), //5
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), //6
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), //7
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, .875D, 1.0D), //10
+	 public BlockCorn(){
+		 super(Block.Properties.create(Material.PLANTS).doesNotBlockMovement()
+				 .tickRandomly().hardnessAndResistance(0.3F,0F).sound(SoundType.CROP));
+	 }
 
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), //8
-			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) }; //11
+	 @Override
+	 public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext p_220053_4_) {
+		 return SHAPES[state.get(this.getAgeProperty())];
+	 }
 
-	public BlockCorn() {
-		setHardness(0.3F);
-		this.setSoundType(SoundType.PLANT);
-		this.disableStats();
-	}
-	
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	 @Override
+	 protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		 return state.getBlock() instanceof FarmlandBlock;
+	 }
 
-		if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN_MID){
-			world.destroyBlock(pos.down(), true);
-			world.destroyBlock(pos.down(2), true);
-		}else
-			if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN){
-				world.destroyBlock(pos.down(), true);
-			}    
-	}
+	 @Override
+	 public IntegerProperty getAgeProperty() {
+		 return CORNAGE;
+	 }	   
 
-	@Override
-	public float getBlockHardness(IBlockState state, World worldIn, BlockPos pos) {
-		return isMaxAge(state) ? 0.2f : 0.0f;
-	}
+	 @Override
+	 @OnlyIn(Dist.CLIENT)
+	 protected IItemProvider getSeedsItem() {
+		 return ModItems.KERNELS;
+	 }
 
-	@Override
-	protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
-		if (!canBlockStay(worldIn, pos, state)) {
-			this.dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
-		}
-	}
+	 @Override
+	 public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
 
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		if (getAge(state) != getMaxAge()) drops.add(new ItemStack(ModItems.KERNELS));
-	}
+		 if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN_MID){
+			 world.destroyBlock(pos.down(), true);
+			 world.destroyBlock(pos.down(2), true);
+		 }else
+			 if(world.getBlockState(pos.down()).getBlock() == ModBlocks.CORN){
+				 world.destroyBlock(pos.down(), true);
+			 }    
+	 }
 
-	@Override
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-		return this.canPlaceBlockAt(world, pos);
-	}
+	 @Override
+	 public float getBlockHardness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		 return isMaxAge(state) ? 0.2f : 0.0f;
+	 }
 
-	@Override
-	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
-		return !isMaxAge(state) && world.getBlockState(pos.up()).getMaterial().isReplaceable();
-	}
+	 @Override
+	 public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+		 BlockState down = world.getBlockState(pos.down());
+		 return down.getBlock().canSustainPlant(down, world, pos, Direction.UP, this);
+	 }
 
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		IBlockState down = world.getBlockState(pos.down());
-		return down.getBlock().canSustainPlant(down, world, pos, EnumFacing.UP, this);
-	}
+	 @Override
+	 public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
+		 return !isMaxAge(state) && world.getBlockState(pos.up()).getMaterial().isReplaceable();
+	 }
 
-	@Override
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-		return true;
-	}
+	 @Override
+	 public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+		 return true;
+	 }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getAgeProperty());
-	}
+	 @Override
+	 protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder){
+		 builder.add(getAgeProperty());
+	 }
 
-	@Override
-	protected PropertyInteger getAgeProperty() {
-		return AGE;
-	}
+	 @Override
+	 protected int getBonemealAgeIncrease(World worldIn) {
+		 return MathHelper.nextInt(worldIn.rand, 1, 2);
+	 }
 
-	@Override
-	protected int getBonemealAgeIncrease(World worldIn) {
-		return MathHelper.getInt(worldIn.rand, 1, 2);
-	}
+	 @Override
+	 public int getMaxAge() {
+		 return 4;
+	 }
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return CROPS_AABB[state.getValue(AGE)];
-	}
+	 
+	 public int getMetaFromState(BlockState state) {
+		 return getAge(state) == 5 ? 15 : getAge(state);
+	 }
 
-	@Override
-	protected Item getCrop() {
-		return ModItems.CORNCOB;
-	}
+	 @Override
+	   @OnlyIn(Dist.CLIENT)
+	   public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	      return new ItemStack(ModItems.KERNELS);
+	   }
 
-	@Override
-	public int getMaxAge() {
-		return 4;
-	}
+	 
+	 public BlockState getStateFromMeta(int meta) {
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return getAge(state) == 5 ? 15 : getAge(state);
-	}
+		 if (meta <= 4) return withAge(meta);
+		 if (meta == 9 || meta == 15) return withAge(5);
 
-	@Override
-	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-		return EnumPlantType.Crop;
-	}
+		 if (meta <= 7) return ModBlocks.CORN_MID.withAge(meta - 5);
+		 if (meta == 10) return ModBlocks.CORN_MID.withAge(3);
 
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(ModItems.KERNELS);
-	}
+		 if (meta == 8) return ModBlocks.CORN_TOP.withAge(0);
+		 if (meta == 11) return ModBlocks.CORN_TOP.withAge(1);
+		 return getDefaultState();
+	 }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	 @Override
+	 public void grow(World worldIn, Random rand, BlockPos pos, BlockState state) {
+		 tick(state, worldIn, pos, rand);
+	 }
 
-		if (meta <= 4) return withAge(meta);
-		if (meta == 9 || meta == 15) return withAge(5);
+	 @Override
+	 public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 
-		if (meta <= 7) return ModBlocks.CORN_MID.withAge(meta - 5);
-		if (meta == 10) return ModBlocks.CORN_MID.withAge(3);
+		 if(false){
+			 if(state.get(this.getAgeProperty()) == 5){
+				 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+				 return worldIn.setBlockState(pos, this.getDefaultState());
+			 }
+		 }
 
-		if (meta == 8) return ModBlocks.CORN_TOP.withAge(0);
-		if (meta == 11) return ModBlocks.CORN_TOP.withAge(1);
-		return getDefaultState();
-	}
+		 return super.onBlockActivated(state, worldIn, pos, player, hand, hit);		
+	 }
 
-	@Override
-	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-		updateTick(worldIn, pos, state, rand);
-	}
+	 public BlockState getNextState() {
+		 return ModBlocks.CORN_MID.getDefaultState();
+	 }
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	 @Override
+	 public void tick(BlockState state, World worldIn, BlockPos pos, Random rand) {
+		 isValidPosition(state, worldIn, pos); //Check and see if we can still exist.
+		 if (worldIn.getBlockState(pos) == state) //If we can:
+		 {
+			 if (!worldIn.isAreaLoaded(pos, 1)) //Make sure we should bother checking
+				 return;
+			 if (worldIn.getLight(pos.up()) >= 9 && checkFertile(worldIn, pos)) //Check for light and water
+			 {
+				 boolean canGrow = rand.nextInt(3) == 0;
+				 if (!isMaxAge(state)) {
+					 if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, canGrow)) {
+						 worldIn.setBlockState(pos, withAge(getAge(state) + 1));
+						 ForgeHooks.onCropsGrowPost(worldIn, pos, state);
+						 if (isMaxAge(worldIn.getBlockState(pos)) && getNextState() != null && worldIn.getBlockState(pos = pos.up()).getMaterial().isReplaceable()) {
+							 if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
+								 worldIn.setBlockState(pos, getNextState());
+								 ForgeHooks.onCropsGrowPost(worldIn, pos, getNextState());
+							 }
+						 }
+					 }
+				 } else if (getNextState() != null && worldIn.getBlockState(pos = pos.up()).getMaterial().isReplaceable()) {
+					 if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
+						 worldIn.setBlockState(pos, getNextState());
+						 ForgeHooks.onCropsGrowPost(worldIn, pos, getNextState());
+					 }
+				 }
+			 }
+		 }
+	 }
 
-		if(ConfigSimpleCorn.useeasyharvesting){
-			if(state.getValue(this.getAgeProperty()) > getMaxAge()){
-				return worldIn.setBlockState(pos, this.getDefaultState());
-			}
-		}
-		
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);		
-	}
-
-	public IBlockState getNextState() {
-		return ModBlocks.CORN_MID.getDefaultState();
-	}
-
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		this.checkAndDropBlock(worldIn, pos, state); //Check and see if we can still exist.
-		if (worldIn.getBlockState(pos) == state) //If we can:
-		{
-			if (!worldIn.isAreaLoaded(pos, 1)) //Make sure we should bother checking
-				return;
-			if (worldIn.getLightFromNeighbors(pos.up()) >= 9 && checkFertile(worldIn, pos)) //Check for light and water
-			{
-				boolean canGrow = rand.nextInt(ConfigSimpleCorn.growChance) == 0;
-				if (!isMaxAge(state)) {
-					if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, canGrow)) {
-						worldIn.setBlockState(pos, withAge(getAge(state) + 1));
-						ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
-						if (isMaxAge(worldIn.getBlockState(pos)) && getNextState() != null && worldIn.getBlockState(pos = pos.up()).getBlock().isReplaceable(worldIn, pos)) {
-							if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
-								worldIn.setBlockState(pos, getNextState());
-								ForgeHooks.onCropsGrowPost(worldIn, pos, getNextState(), worldIn.getBlockState(pos));
-							}
-						}
-					}
-				} else if (getNextState() != null && worldIn.getBlockState(pos = pos.up()).getBlock().isReplaceable(worldIn, pos)) {
-					if (ForgeHooks.onCropsGrowPre(worldIn, pos, getNextState(), canGrow)) {
-						worldIn.setBlockState(pos, getNextState());
-						ForgeHooks.onCropsGrowPost(worldIn, pos, getNextState(), worldIn.getBlockState(pos));
-					}
-				}
-			}
-		}
-	}
-
-	public boolean checkFertile(World world, BlockPos pos) {
-		return world.getBlockState(pos.down()).getBlock().isFertile(world, pos.down());
-	}
+	 public boolean checkFertile(World world, BlockPos pos) {
+		 return world.getBlockState(pos.down()).isFertile(world, pos.down());
+	 }
 
 }
