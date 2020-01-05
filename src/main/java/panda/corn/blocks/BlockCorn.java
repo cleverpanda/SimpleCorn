@@ -28,9 +28,9 @@ import panda.corn.init.ModItems;
 
 public class BlockCorn extends BlockCrops implements IGrowable {
 
-	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 5);
+	public static final PropertyInteger CORNAGE = PropertyInteger.create("age", 0, 5);
 
-	public static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
+	protected static final AxisAlignedBB[] CORN_AABB = new AxisAlignedBB[] {
 
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), //0
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), //1
@@ -80,7 +80,9 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		if (getAge(state) != getMaxAge()) drops.add(new ItemStack(ModItems.KERNELS));
+		if (getAge(state) < 5){
+			drops.add(new ItemStack(ModItems.KERNELS));
+		}
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	protected PropertyInteger getAgeProperty() {
-		return AGE;
+		return CORNAGE;
 	}
 
 	@Override
@@ -121,7 +123,7 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return CROPS_AABB[state.getValue(AGE)];
+		return CORN_AABB[state.getValue(CORNAGE)];
 	}
 
 	@Override
@@ -172,7 +174,9 @@ public class BlockCorn extends BlockCrops implements IGrowable {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		if(ConfigSimpleCorn.useeasyharvesting){
-			if(state.getValue(this.getAgeProperty()) > getMaxAge()){
+
+			if(state.getValue(this.getAgeProperty()) == 5){
+				worldIn.setBlockToAir(pos);
 				return worldIn.setBlockState(pos, this.getDefaultState());
 			}
 		}

@@ -42,13 +42,13 @@ public class ConfigSimpleCorn {
 		popcornFood = config.getInt("VALUE_FOOD_POPCORN", Configuration.CATEGORY_GENERAL, 1, 1, 20,"Hunger value of popcorn");
 		popcornSat = config.getFloat("VALUE_SATURATION_POPCORN",  Configuration.CATEGORY_GENERAL, 0.1F, 0F, 1F, "Saturation value of popcorn");
 		
-		kernelWeight =  config.getInt("VALUE_KERNEL_DROP", Configuration.CATEGORY_GENERAL, 8, 1, 100,"The relative chance of dropping kernels from grass. Seeds are 10");
-		generationWeight =  config.getInt("VALUE_CORN_FIELD_GENERATION", Configuration.CATEGORY_GENERAL, 30, 0, 100,"The relative chance of spawning corn fields. The small houses are 3, Blacksmiths are 15. higher is lower.");
-		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 3, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
-		dropamount = Math.round(((float)config.getInt("VALUE_DROP_AMOUNT", Configuration.CATEGORY_GENERAL, 4, 1, 1000,"maximum amount of corn a plant will drop"))/2 +1);
+		kernelWeight =  config.getInt("VALUE_KERNEL_DROP", Configuration.CATEGORY_GENERAL, 6, 1, 100,"The relative chance of dropping kernels from grass. Seeds are 10");
+		generationWeight =  config.getInt("VALUE_CORN_FIELD_GENERATION", Configuration.CATEGORY_GENERAL, 35, 0, 100,"The relative chance of spawning corn fields. The small houses are 3, Blacksmiths are 15. higher is lower.");
+		growChance = config.getInt("VALUE_GROWTH_CHANCE", Configuration.CATEGORY_GENERAL, 4, 0, 1000,"Chance of growing corn from rand.nextInt(n) == 0");
+		dropamount = Math.round(((float)config.getInt("VALUE_DROP_AMOUNT", Configuration.CATEGORY_GENERAL, 3, 1, 1000,"maximum amount of corn a plant will drop"))/2 +1);
 		
 		useeasyharvesting = config.getBoolean("USE_EASY_HARVESTING", Configuration.CATEGORY_GENERAL, false, "Allow right click harvesting");
-		popcornFireworks = config.getBoolean("ENABLE_POPCORN_FIREWORKS", Configuration.CATEGORY_GENERAL, true, "");
+		popcornFireworks = config.getBoolean("ENABLE_POPCORN_FIREWORKS", Configuration.CATEGORY_GENERAL, false, "");
 				
 		plantoilvolume = config.getInt("VALUE_IE_FESQUEEZER_OIL_VOLUME",  ieCategory, 100, 0, 1000, "Amount of plant oil in mB that kernels produces in an IE squeezer");
 		ethanolvolume = config.getInt("VALUE_IE_FERMENTER_ETHANOL_VOLUME",  ieCategory, 120, 0, 1000, "Amount of ethanol in mB that corn produces in an IE fermenter");

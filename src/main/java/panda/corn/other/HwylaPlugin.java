@@ -28,7 +28,7 @@ public class HwylaPlugin implements IWailaPlugin {
             @Override
             public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
             	Block block = accessor.getBlock();
-            	int age = accessor.getBlockState().getValue(BlockCorn.AGE);
+            	int age = accessor.getBlockState().getValue(BlockCorn.CORNAGE);
             	currenttip.clear();
             	
             	if(block == ModBlocks.CORN){
@@ -38,7 +38,7 @@ public class HwylaPlugin implements IWailaPlugin {
             			IBlockState above = accessor.getWorld().getBlockState(accessor.getPosition().up());
             			int upperAge = 0;
                 		if(above instanceof BlockCorn){
-                			upperAge = above.getValue(BlockCorn.AGE);
+                			upperAge = above.getValue(BlockCorn.CORNAGE);
                 		}
                 		currenttip.add(0, getPercent(age + upperAge));
             		}

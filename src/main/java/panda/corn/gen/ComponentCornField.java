@@ -56,10 +56,10 @@ public class ComponentCornField extends StructureVillagePieces.Village{
 		if(crop != null){
 			for (i = 1; i <= 7; ++i)
 			{
-				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
-				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
-				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
-				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.AGE,MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 1, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 2, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 4, 1, i, box);
+				this.setBlockState(worldIn, crop.getDefaultState().withProperty(BlockCorn.CORNAGE,MathHelper.getInt(rand, 0, 3)), 5, 1, i, box);
 			}
 		}
 

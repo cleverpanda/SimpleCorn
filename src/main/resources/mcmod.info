@@ -4,9 +4,9 @@
   "name": "Simple Corn",
   "description": "Corn like Mojang might make!",
 
-  "version": "2.5.4",
+  "version": "2.5.12",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/simple-corn",
   "updateUrl": "",
   "authorList": ["Cleverpanda714"],
 

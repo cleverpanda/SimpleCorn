@@ -69,6 +69,7 @@ public class BlockCornTop extends BlockCorn {
 
 		if(ConfigSimpleCorn.useeasyharvesting){
 			if(isMaxAge(state)){
+				worldIn.setBlockToAir(pos.down(2));
 				return worldIn.setBlockState(pos.down(2), ModBlocks.CORN.getDefaultState());
 			}
 		}
@@ -78,15 +79,18 @@ public class BlockCornTop extends BlockCorn {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return CROPS_AABB[state.getValue(AGE) + 6];
+		return CORN_AABB[state.getValue(CORNAGE) + 6];
 	}
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		Random rand = world instanceof World ? ((World)world).rand : new Random();
 		
-		if (getAge(state) == getMaxAge()+1){
-			int n = rand.nextInt(ConfigSimpleCorn.dropamount)+1;
+		if (getAge(state) == getMaxAge()){
+			int n = rand.nextInt(ConfigSimpleCorn.dropamount);
+			if(ConfigSimpleCorn.useeasyharvesting && n>1) {
+				n = n-1;
+			}
 			drops.add(new ItemStack(ModItems.CORNCOB,n));
 		}else
 			drops.add(new ItemStack(ModItems.KERNELS));
