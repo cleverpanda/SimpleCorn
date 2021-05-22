@@ -1,10 +1,12 @@
-﻿tile.simplecorn.corn.name=Milho
-tile.simplecorn.corn_mid.name=Milho
-tile.simplecorn.corn_top.name=Milho
-item.simplecorn.corncob.name=Espiga de Milho
-item.simplecorn.roastedcorn.name=Milho Assado
-item.simplecorn.cornchowder.name=Mingau de Milho
-item.simplecorn.chickencornchowder.name=Ensopado de Frango com milho
-item.simplecorn.kernels.name=Grãos de Milho
-item.simplecorn.poppedcorn.name=Pipoca
-item.simplecorn.popfirework.name=Foguete de Fogos de Artifício
+﻿{
+    "block.simplecorn.corn": "Milho",
+    "block.simplecorn.corn_mid": "Milho",
+    "block.simplecorn.corn_top": "Milho",
+    "item.simplecorn.corncob": "Espiga de Milho",
+    "item.simplecorn.roastedcorn": "Milho Assado",
+    "item.simplecorn.cornchowder": "Mingau de Milho",
+    "item.simplecorn.chickencornchowder": "Ensopado de Frango com milho",
+    "item.simplecorn.kernels": "Grãos de Milho",
+    "item.simplecorn.poppedcorn": "Pipoca",
+    "item.simplecorn.popfirework": "Foguete de Fogos de Artifício"
+}

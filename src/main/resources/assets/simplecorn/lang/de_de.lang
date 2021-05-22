@@ -1,11 +1,12 @@
-tile.simplecorn.corn.name=Mais
-tile.simplecorn.corn_mid.name=Mais
-tile.simplecorn.corn_top.name=Mais
-item.corncob.name=Maiskolben
-item.roastedcorn.name=Gerösteter Mais
-item.cornchowder.name=Maissuppe
-item.chickencornchowder.name=Hühnermaissuppe
-item.kernels.name=Maiskörner
-item.poppedcorn.name=Popcorn
-item.simplecorn.popfirework.name=Firework Rocket
-
+{
+    "block.simplecorn.corn": "Mais",
+    "block.simplecorn.corn_mid": "Mais",
+    "block.simplecorn.corn_top": "Mais",
+    "item.corncob": "Maiskolben",
+    "item.roastedcorn": "Gerösteter Mais",
+    "item.cornchowder": "Maissuppe",
+    "item.chickencornchowder": "Hühnermaissuppe",
+    "item.kernels": "Maiskörner",
+    "item.poppedcorn": "Popcorn",
+    "item.simplecorn.popfirework": "Firework Rocket"
+}

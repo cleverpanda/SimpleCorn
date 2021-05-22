@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "simplecorn:kernels"
+  },
+  "result": "simplecorn:poppedcorn",
+  "experience": 0.01,
+  "cookingtime": 100
+}

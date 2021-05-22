@@ -1,41 +1,10 @@
-{  
-   "forge_marker":1,
-   "defaults":{  
-      "model":"simplecorn:densecrop",
-      "transform":"forge:default-block"
-   },
-   "variants":{  
-      "age":{  
-         "0":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_1"
-            }
-         },
-         "1":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_2"
-            }
-         },
-         "2":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_3"
-            }
-         },
-         "3":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_4"
-            }
-         },
-         "4":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_5"
-            }
-         },
-         "5":{  
-            "textures":{  
-               "crop": "simplecorn:blocks/Corn_10"
-            }
-         }
-      }
-   }
+{
+  "variants":{   
+  	  "age=0":{"model": "simplecorn:block/corn_1"},
+  	  "age=1":{"model": "simplecorn:block/corn_2"},
+  	  "age=2":{"model": "simplecorn:block/corn_3"},
+  	  "age=3":{"model": "simplecorn:block/corn_4"},
+  	  "age=4":{"model": "simplecorn:block/corn_5"},
+  	  "age=5":{"model": "simplecorn:block/corn_10"}
+  }
 }

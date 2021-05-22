@@ -1,0 +1,14 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/cleverpanda/SimpleCorn/issues"
+license="MIT License"
+[[mods]] #mandatory
+modId="simplecorn"
+version="${file.jarVersion}"
+displayName="Simple Corn"
+displayURL="https://minecraft.curseforge.com/projects/simple-corn"
+logoFile="simplecorn.png"
+authors="Cleverpanda714"
+description='''
+Corn like Mojang might make!
+'''

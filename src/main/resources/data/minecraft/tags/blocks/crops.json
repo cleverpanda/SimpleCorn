@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "simplecorn:corn",
+    "simplecorn:corn_mid",
+    "simplecorn:corn_top"
+  ]
+}

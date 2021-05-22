@@ -1,213 +1,142 @@
 buildscript {
-  repositories {
-    jcenter()
-    maven {
-      name = 'forge'
-      url = 'http://files.minecraftforge.net/maven'
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
     }
-    maven {
-      name = 'gradle'
-      url 'https://plugins.gradle.org/m2/'
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
     }
-  }
-  dependencies {
-    classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-  }
 }
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+version = '1.16.5-0.0.1'
+group = 'panda.corn' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'SimpleCorn'
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-}
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
-repositories {
-  maven {
-    name 'IE Repo'
-    url 'https://maven.blamejared.com/'
-  }
-  maven {
-    name 'Nut boii'
-    url 'http://tehnut.info/maven'
-  }
-  maven { // CoFH
-    name 'Covers Maven'
-    url 'http://maven.covers1624.net/'
-  }
-  maven { // CCL, CCC, NEI
-    name 'Chickenbones Repo'
-    url 'http://chickenbones.net/maven/'
-  }
-  
+minecraft {
+
+    mappings channel: 'snapshot', version: '20210309-1.16.5'
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                simplecorn{
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                simplecorn {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'simplecorn', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                simplecorn {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-    deobfCompile "blusunrize:ImmersiveEngineering:0.12-89-518:deobf"
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.2.+:universal"
-
-    deobfCompile ("cofh:CoFHCore:1.12.2-4.6.2.+:universal") {
-        exclude group: 'mezz.jei'
-    }
-    deobfCompile ("cofh:ThermalFoundation:1.12.2-2.6.2.+:universal") {
-        exclude group: 'mezz.jei'
-    }
-    deobfCompile ("cofh:ThermalExpansion:1.12.2-5.5.3.+:universal") {
-        exclude group: 'mezz.jei'
-    }
-    deobfCompile ("cofh:RedstoneFlux:1.12-2.1.0.7+:universal") {
-        exclude group: 'mezz.jei'
-    }
-    deobfCompile ("cofh:CoFHWorld:1.12.2-1.3.0.6+:universal") {
-        exclude group: 'mezz.jei'
-    }
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
 }
 
-minecraft {
-    version = "1.12.2-14.23.5.2847"
-    runDir = "run"
-    mappings = "stable_39"
-	
-	replace '@FINGERPRINT@', project.findProperty('signSHA1')
-	
-	if (project.hasProperty('mc_username')) {
-    clientRunArgs += ['--username', "${project.mc_username}"]
-    if (project.hasProperty('mc_password')) {
-      clientRunArgs += ['--password=', "${project.mc_password}"]
-    }
-  }
-  if (project.hasProperty('mc_uuid')) {
-    clientRunArgs += ['--uuid', "${project.mc_uuid}"]
-  }
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+build.dependsOn sourcesJar
+
+artifacts {
+	archives sourcesJar
 }
 
-tasks.withType(JavaCompile) {
-  options.encoding = 'UTF-8'
-}
-
-javadoc {
-  failOnError = false
-}
-
-def mod_file = getModFile()
-def short_version = getVersion('VERSION', mod_file)
-version = mc_version + '-' + short_version
-def display_version = short_version
-
-if (System.getenv().BUILD_NUMBER) {
-  version += '.' + System.getenv().BUILD_NUMBER
-  display_version = '.' + System.getenv().BUILD_NUMBER
-}
-
-sourceCompatibility = targetCompatibility = '1.8'
-
-eclipse.project {
-  buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
-  natures 'org.eclipse.buildship.core.gradleprojectnature'
-}
-
-import groovy.json.JsonSlurper
-
-processResources {
-  inputs.property 'version', project.version
-  inputs.property 'mcversion', project.minecraft.version
-
-  from (sourceSets.main.resources.srcDirs) {
-    include 'mcmod.info'
-    expand 'version': short_version, 'mcversion': project.minecraft.version
-  }
-
-  from (sourceSets.main.resources.srcDirs) {
-    exclude 'mcmod.info'
-  }
-
-  rename '(.+_at.cfg)', 'META-INF/$1'
-}
-
+// Example for how to get properties into the manifest for reading by the runtime..
 jar {
-  manifest {
-    if (project.hasProperty('coreplugin')) {
-      attributes 'FMLCorePluginContainsFMLMod': 'true'
-      attributes 'FMLCorePlugin': project.coreplugin
+    manifest {
+        attributes([
+            "Specification-Title": "simplecorn",
+            "Specification-Vendor": "panda.corn",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"panda.corn",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
-  }
 }
 
-task deobfJar(type: Jar) {
-  classifier = 'deobf'
-  from sourceSets.main.output
-}
-
-task signJar(type: SignJar, dependsOn: reobfJar) {
-  // Skips if the keyStore property is missing.
-  onlyIf {
-    project.hasProperty('keyStore')
-  }
-
-  // findProperty allows us to reference the property without it existing. 
-  // Using project.propName would cause the script to fail validation if 
-  // the property did not exist. 
-  keyStore = project.findProperty('keyStore')
-  alias = project.findProperty('keyStoreAlias')
-  storePass = project.findProperty('keyStorePass')
-  keyPass = project.findProperty('keyStoreKeyPass')
-  inputFile = jar.archivePath
-  outputFile = jar.archivePath
-}
-
-build.dependsOn signJar
-
-
+// Process resources on build
 processResources {
-  inputs.property 'version', project.version
-  inputs.property 'mcversion', project.minecraft.version
+	// This will ensure that this task is redone when the versions change.
+	inputs.property 'version', project.version
 
-  from (sourceSets.main.resources.srcDirs) {
-    include 'mcmod.info'
-    expand 'version': short_version, 'mcversion': project.minecraft.version
-  }
+	// Replace stuff in mods.toml, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'META-INF/mods.toml'
 
-  from (sourceSets.main.resources.srcDirs) {
-    exclude 'mcmod.info'
-  }
+		// Replace version
+		expand 'version':project.version
+	}
+
+	// Copy everything else except the mods.toml
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'META-INF/mods.toml'
+	}
 }
 
-String getModFile() {
-  String path = ''
-  FileTree tree = fileTree(dir: 'src/main/java')
-  tree.include '**/*.java'
-  tree.visit { element ->
-    if (element.file.isFile()) {
-      element.file.eachLine { String s ->
-        s = s.trim()
-        if (s.startsWith('@Mod(')) {
-          path = "src/main/java/$element.relativePath"
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
         }
-      }
     }
-  }
-  return path
-}
-
-String getVersion(String type, String mod_file) {
-  String major = '0'
-  String revision = '0'
-  String patch = '0'
-  File file = file(mod_file)
-  def prefix = ~/^(?:public|protected|private) static final String $type = ".*$/
-  file.eachLine { String s ->
-    s = s.trim()
-    if (s ==~ prefix || prefix.matcher(s).matches()) {
-      String[] bits = s.split("=")
-      String interesting = bits[1].trim()
-      interesting = interesting.substring(1, interesting.length() - 2)
-      String[] pts = interesting.trim().split("\\.")
-
-      major = pts[0] ?: '0'
-      revision = pts[1] ?: '0'
-      patch = pts[2] ?: '0'
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
     }
-  }
-  return "$major.$revision.$patch"
 }

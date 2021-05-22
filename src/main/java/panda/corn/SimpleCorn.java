@@ -1,96 +1,83 @@
 package panda.corn;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Set;
 
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntityVillager;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.ParrotEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLConstructionEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.registries.GameData;
-import net.minecraftforge.registries.RegistryManager;
-import panda.corn.entity.MyEntityFireworkRocket;
-import panda.corn.events.ToolTipHandler;
-import panda.corn.gen.ComponentCornField;
-import panda.corn.gen.CornWorldGen;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import panda.corn.config.ConfigSimpleCorn;
+import panda.corn.init.ModBlocks;
 import panda.corn.init.ModItems;
-import panda.corn.other.ImmersiveEngineeringCompat;
-import panda.corn.other.ThermalCompat;
-import panda.corn.proxy.CommonProxy;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-@Mod(modid = SimpleCorn.MODID, name = SimpleCorn.NAME, version = SimpleCorn.VERSION, dependencies = "after:immersiveengineering;"+"after:thermalexpansion")
-
+@Mod(SimpleCorn.MODID)
+@EventBusSubscriber(modid = SimpleCorn.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class SimpleCorn {	
-	
+	//modid = SimpleCorn.MODID, name = SimpleCorn.NAME, version = SimpleCorn.VERSION, dependencies = "after:immersiveengineering;"+"after:thermalexpansion"
 	public static final String MODID = "simplecorn";
-	public static final String NAME = "Simple Corn";
-	public static final String VERSION = "2.5.12";
-	
-	private static boolean isIEInstalled;
-	private static boolean isThermalInstalled;
-	public Configuration config;
-	
-	@Instance(MODID)
-	public static SimpleCorn instance;
-	
-	@SidedProxy(clientSide = "panda.corn.proxy.ClientProxy", serverSide = "panda.corn.proxy.ServerProxy")
-	public static CommonProxy proxy;
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		MapGenStructureIO.registerStructureComponent(ComponentCornField.class, "Vicf");
-		VillagerRegistry.instance().registerVillageCreationHandler(new CornWorldGen());
-		
-		config = new Configuration(event.getSuggestedConfigurationFile());
-		ConfigSimpleCorn.load(config);
-		
-		if(ConfigSimpleCorn.popcornFireworks){
-		  MinecraftForge.EVENT_BUS.register(new ToolTipHandler());
-		}
-		
-		EntityRegistry.registerModEntity(new ResourceLocation(MODID+":entitypopfirework"),MyEntityFireworkRocket.class, "entitypopfirework", 132, instance, 64, 3, true);	
+	public static final Logger LOGGER = LogManager.getLogger(MODID);
+
+	public SimpleCorn(){
+		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
+		modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigSimpleCorn.SERVER_SPEC);		
+	}
+
+	@SuppressWarnings("unchecked")
+	@SubscribeEvent
+	public static void setup(final FMLCommonSetupEvent event){
+
+		ComposterBlock.CHANCES.put(ModItems.CORNCOB.asItem(), 0.65F);
+		ComposterBlock.CHANCES.put(ModItems.KERNELS.asItem(), 0.3F);
+		replaceTemptation(PigEntity.class, "TEMPTATION_ITEMS",ModItems.CORNCOB);
+		replaceTemptation(ChickenEntity.class, "TEMPTATION_ITEMS",ModItems.KERNELS);
+
+		((Set<Item>) ObfuscationReflectionHelper.getPrivateValue(ParrotEntity.class, null, "TAME_ITEMS")).add(ModItems.KERNELS);		
 	}
 	
-	@EventHandler
-	public void init(FMLInitializationEvent event){
-		if(isIEInstalled){
-			ImmersiveEngineeringCompat.init();
-		}
-		
-		if(isThermalInstalled){
-			ThermalCompat.init();
-		}
-		
-		if(ConfigSimpleCorn.popcornFireworks){
-		  RegistryManager.ACTIVE.getRegistry(GameData.RECIPES).remove(new ResourceLocation("minecraft:fireworks"));
-		}
-		
-		((Set<Item>) ObfuscationReflectionHelper.getPrivateValue(EntityPig.class, null, "field_184764_bw")).add(ModItems.CORNCOB);
-		((Set<Item>) ObfuscationReflectionHelper.getPrivateValue(EntityChicken.class, null, "field_184761_bD")).add(ModItems.KERNELS);
-		
-		MinecraftForge.addGrassSeed(new ItemStack(ModItems.KERNELS), ConfigSimpleCorn.kernelWeight);
-		VillagerRegistry.FARMER.getCareer(0).addTrade(1, new EntityVillager.EmeraldForItems(ModItems.CORNCOB, new EntityVillager.PriceInfo(18, 22)));
+	@SubscribeEvent
+	public static void setupClient(final FMLClientSetupEvent event) {
+		RenderTypeLookup.setRenderLayer(ModBlocks.CORN    , RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.CORN_MID, RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.CORN_TOP, RenderType.getCutout());
 	}
 	
-	@EventHandler
-	public static void onConstructionEvent(FMLConstructionEvent event) {
-		isIEInstalled = Loader.isModLoaded("immersiveengineering");
-		isThermalInstalled = Loader.isModLoaded("thermalexpansion");
+	public static <T> void replaceTemptation(Class<?> clazz, String fieldName, Item item) {
+		Field field = ObfuscationReflectionHelper.findField(clazz, fieldName);
+		FieldUtils.removeFinalModifier(field, true);
+		try {
+			field.set(null, new CompoundIngredient(Arrays.asList((Ingredient)field.get(null), Ingredient.fromStacks(new ItemStack(item)))) {} );
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+		final ModConfig config = event.getConfig();
+		if (config.getSpec() == ConfigSimpleCorn.SERVER_SPEC) {
+			ConfigSimpleCorn.bakeServer(config);
+		}
 	}
 
 }

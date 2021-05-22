@@ -1,27 +1,34 @@
 package panda.corn.items;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemSeeds;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockNamedItem;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.EnumPlantType;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
 import panda.corn.init.ModBlocks;
 
-public class ItemKernels extends ItemSeeds implements IPlantable{
-
+public class ItemKernels extends BlockNamedItem implements IPlantable{
 	public ItemKernels() {
-		super(ModBlocks.CORN, Blocks.FARMLAND);
+		super(ModBlocks.CORN, new Properties().group(ItemGroup.MATERIALS));
 	}
 	
 	@Override
-	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos){
-		return EnumPlantType.Crop;
-	}
-	
+	public PlantType getPlantType(IBlockReader world, BlockPos pos) {
+        return PlantType.CROP;
+    }
+
 	@Override
-	public IBlockState getPlant(IBlockAccess world, BlockPos pos){
+	public BlockState getPlant(IBlockReader world, BlockPos pos) {
 		return ModBlocks.CORN.getDefaultState();
+	}
+	
+	@Override
+	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+		if(this.isInGroup(group))
+			items.add(new ItemStack(this));
 	}
 }

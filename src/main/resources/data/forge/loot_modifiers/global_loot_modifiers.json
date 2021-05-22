@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "entries": [
+    "simplecorn:kernels_from_grass",
+    "simplecorn:kernels_from_tall_grass"
+  ]
+}

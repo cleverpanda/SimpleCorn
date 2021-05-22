@@ -1,12 +1,14 @@
-//Translate by: Dorzar / VeryHardChamp
-//Act. 30/07/2017
-tile.simplecorn.corn.name=Maíz
-tile.simplecorn.corn_mid.name=Maíz
-tile.simplecorn.corn_top.name=Maíz
-item.simplecorn.corncob.name=Mazorca de maíz
-item.simplecorn.roastedcorn.name=Maíz tostado
-item.simplecorn.cornchowder.name=Sopa de maíz
-item.simplecorn.chickencornchowder.name=Sopa de maíz con pollo
-item.simplecorn.kernels.name=Granos de maíz
-item.simplecorn.poppedcorn.name=Palomitas de maíz
-item.simplecorn.popfirework.name=Cohete de fuegos artificiales
+{
+#Translate by: Dorzar / VeryHardChamp
+#Act. 30/07/2017
+    "block.simplecorn.corn": "Maíz",
+    "block.simplecorn.corn_mid": "Maíz",
+    "block.simplecorn.corn_top": "Maíz",
+    "item.simplecorn.corncob": "Mazorca de maíz",
+    "item.simplecorn.roastedcorn": "Maíz tostado",
+    "item.simplecorn.cornchowder": "Sopa de maíz",
+    "item.simplecorn.chickencornchowder": "Sopa de maíz con pollo",
+    "item.simplecorn.kernels": "Granos de maíz",
+    "item.simplecorn.poppedcorn": "Palomitas de maíz",
+    "item.simplecorn.popfirework": "Cohete de fuegos artificiales"
+}
